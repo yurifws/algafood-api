@@ -8,7 +8,7 @@ import com.algaworks.algafood.di.service.AtivacaoClienteService;
 @Configuration
 public class AlgaConfig {
 	
-	@Bean(initMethod = "init", destroyMethod = "destroy")
+	@Bean
 	public AtivacaoClienteService ativacaoClienteService() {
 		return new AtivacaoClienteService();
 	}
