@@ -4,7 +4,8 @@ import org.springframework.stereotype.Component;
 
 import com.algaworks.algafood.di.modelo.Cliente;
 
-//@Component
+
+@Component
 public class NotificadorSMS implements Notificador {
 	
 	@Override
