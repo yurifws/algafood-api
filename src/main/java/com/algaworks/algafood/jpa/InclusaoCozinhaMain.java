@@ -26,6 +26,7 @@ public class InclusaoCozinhaMain {
 
 		System.out.printf("%s - %s\n", cozinha1.getId(), cozinha1.getNome());
 		System.out.printf("%s - %s\n", cozinha2.getId(), cozinha2.getNome());
+
 	}
 
 }
