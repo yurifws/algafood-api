@@ -18,7 +18,7 @@ public class BuscaRestauranteMain {
 
 		Restaurante restaurante = restauranteRepository.buscar(1L);
 
-		System.out.printf("%s - %s\n",restaurante.getNome(), restaurante.getTaxaFrete());
+		System.out.printf("%s - %f\n",restaurante.getNome(), restaurante.getTaxaFrete());
 
 	}
 

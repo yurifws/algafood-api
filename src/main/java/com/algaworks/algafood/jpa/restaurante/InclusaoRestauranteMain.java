@@ -31,8 +31,8 @@ public class InclusaoRestauranteMain {
 		restaurante1 = restauranteRepository.salvar(restaurante1);
 		restaurante2 = restauranteRepository.salvar(restaurante2);
 		
-		System.out.printf("%s - %s - %s\n", restaurante1.getId(), restaurante1.getNome(), restaurante1.getTaxaFrete());
-		System.out.printf("%s - %s - %s\n", restaurante2.getId(), restaurante2.getNome(), restaurante2.getTaxaFrete());
+		System.out.printf("%s - %s - %f\n", restaurante1.getId(), restaurante1.getNome(), restaurante1.getTaxaFrete());
+		System.out.printf("%s - %s - %f\n", restaurante2.getId(), restaurante2.getNome(), restaurante2.getTaxaFrete());
 		
 
 	}
