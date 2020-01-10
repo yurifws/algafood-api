@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.algaworks.algafood.AlgafoodApiApplication;
 import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 
 public class InclusaoRestauranteMain {
@@ -18,15 +19,17 @@ public class InclusaoRestauranteMain {
 				.run(args);
 		
 		RestauranteRepository restauranteRepository = applicationContext.getBean(RestauranteRepository.class);
+		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
 		
 		Restaurante restaurante1 = new Restaurante();
 		restaurante1.setNome("Restaurante 3");
 		restaurante1.setTaxaFrete(BigDecimal.valueOf(200.0));
+		restaurante1.setCozinha(cozinhaRepository.buscar(2L));
 		
 		Restaurante restaurante2 = new Restaurante();
 		restaurante2.setNome("Restaurante 4");
 		restaurante2.setTaxaFrete(BigDecimal.valueOf(300.0));
-		
+		restaurante2.setCozinha(cozinhaRepository.buscar(3L));
 		
 		restaurante1 = restauranteRepository.salvar(restaurante1);
 		restaurante2 = restauranteRepository.salvar(restaurante2);
