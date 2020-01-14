@@ -9,6 +9,6 @@ public interface PermissaoRepository {
 	public List<Permissao> listar();
 	public Permissao buscar(Long id);
 	public Permissao salvar(Permissao permissao);
-	public void remover(Permissao permissao);
+	public void remover(Long id);
 
 }

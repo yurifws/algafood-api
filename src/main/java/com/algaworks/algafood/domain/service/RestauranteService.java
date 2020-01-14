@@ -51,15 +51,15 @@ public class RestauranteService {
 		}
 		
 		Long cozinhaId = restaurante.getCozinha().getId();
-		Cozinha cozinhaAtual = cozinhaRepository.buscar(cozinhaId);
+		Cozinha cozinha = cozinhaRepository.buscar(cozinhaId);
 		
-		if(cozinhaAtual == null) {
+		if(cozinha == null) {
 			throw new EntidadeNaoEncontradaException(
 					String.format("Não existe um cadastro de cozinha com código %d", cozinhaId));
 		}
 		
 		BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
-		restauranteAtual.setCozinha(cozinhaAtual);
+		restauranteAtual.setCozinha(cozinha);
 		
 		return restauranteRepository.salvar(restauranteAtual);
 	}

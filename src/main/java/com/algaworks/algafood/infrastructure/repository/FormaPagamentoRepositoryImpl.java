@@ -35,8 +35,8 @@ public class FormaPagamentoRepositoryImpl implements FormaPagamentoRepository{
 	
 	@Override
 	@Transactional
-	public void remover(FormaPagamento formaPagamento) {
-		formaPagamento = buscar(formaPagamento.getId());
+	public void remover(Long id) {
+		FormaPagamento formaPagamento = buscar(id);
 		entityManager.remove(formaPagamento);
 	}
 
