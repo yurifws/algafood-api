@@ -8,7 +8,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaExceltion;
+import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 
@@ -33,9 +33,8 @@ public class CozinhaService {
 	public void remover(Long id) {
 		try {
 			cozinhaRepository.remover(id);
-			
 		}catch (EmptyResultDataAccessException e) {
-			throw new EntidadeNaoEncontradaExceltion(
+			throw new EntidadeNaoEncontradaException(
 					String.format("Não existe um cadastro de cozinha com código %d", id));
 		}catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
