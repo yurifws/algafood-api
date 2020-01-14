@@ -19,7 +19,7 @@ public class ExclusaoPermissaoMain {
 		Permissao permissao = new Permissao();
 		permissao.setId(1L);
 
-		permissaoRepository.remover(permissao);
+		permissaoRepository.remover(permissao.getId());
 	}
 
 }

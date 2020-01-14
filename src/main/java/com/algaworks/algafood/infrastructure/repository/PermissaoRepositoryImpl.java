@@ -35,8 +35,8 @@ public class PermissaoRepositoryImpl implements PermissaoRepository{
 	
 	@Override
 	@Transactional
-	public void remover(Permissao permissao) {
-		permissao = buscar(permissao.getId());
+	public void remover(Long id) {
+		Permissao permissao = buscar(id);
 		entityManager.remove(permissao);
 	}
 
