@@ -2,7 +2,6 @@ package com.algaworks.algafood.domain.service;
 
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -32,14 +31,8 @@ public class EstadoService {
 	}
 
 	public Estado atualizar(Estado estado) {
-		Estado estadoAtual = buscar(estado.getId());
-
-		if (estadoAtual == null) {
-			throw new EntidadeNaoEncontradaException(
-					String.format("Não existe um cadastro de estado com código %d", estado.getId()));
-		}
-		BeanUtils.copyProperties(estado, estadoAtual, "id");
-		return estadoRepository.salvar(estadoAtual);
+		
+		return estadoRepository.salvar(estado);
 	}
 
 	public void remover(Long id) {

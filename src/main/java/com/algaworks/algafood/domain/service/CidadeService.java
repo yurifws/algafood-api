@@ -2,7 +2,6 @@ package com.algaworks.algafood.domain.service;
 
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,11 +41,6 @@ public class CidadeService {
 	}
 	
 	public Cidade atualizar(Cidade cidade){
-		Cidade cidadeAtual = cidadeRepository.buscar(cidade.getId());
-		if(cidadeAtual == null) {
-			throw new EntidadeNaoEncontradaException(
-					String.format("Não existe um cadastro de cidade com código %d", cidade.getId()));
-		}
 		Long estadoId = cidade.getEstado().getId();
 		Estado estado = estadoRepository.buscar(estadoId);
 		
@@ -55,8 +49,7 @@ public class CidadeService {
 					String.format("Não existe um cadastro de estado com código %d", estadoId));
 		}
 		
-		BeanUtils.copyProperties(cidade, cidadeAtual, "id");
-		cidadeAtual.setEstado(estado);
+		cidade.setEstado(estado);
 		return cidadeRepository.salvar(cidade);
 	}
 	

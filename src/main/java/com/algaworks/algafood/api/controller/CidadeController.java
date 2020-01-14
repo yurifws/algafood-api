@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,11 +50,18 @@ public class CidadeController {
 		}
 	}
 
-	@PutMapping
-	public ResponseEntity<?> atualizar(@RequestBody Cidade cidade) {
+	@PutMapping("/{id}")
+	public ResponseEntity<?> atualizar(@PathVariable Long id,
+			@RequestBody Cidade cidade) {
 		try {
-			cidade = cidadeService.atualizar(cidade);
-			return ResponseEntity.ok().body(cidade);
+			Cidade cidadeAtual = cidadeService.buscar(id);
+			if(cidadeAtual != null) {
+				BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+				cidadeAtual = cidadeService.atualizar(cidadeAtual);
+				return ResponseEntity.ok().body(cidadeAtual);
+			}
+			return ResponseEntity.notFound().build();
+			
 		} catch (EntidadeNaoEncontradaException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
@@ -65,7 +73,7 @@ public class CidadeController {
 			cidadeService.remover(id);
 			return ResponseEntity.noContent().build();
 		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
+			return ResponseEntity.notFound().build();
 		}
 	}
 
