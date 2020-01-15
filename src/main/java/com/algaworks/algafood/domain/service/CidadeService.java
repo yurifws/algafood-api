@@ -1,6 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,46 +22,36 @@ public class CidadeService {
 	private EstadoRepository estadoRepository;
 	
 	public List<Cidade> listar(){
-		return cidadeRepository.listar();
+		return cidadeRepository.findAll();
 	}
 	
-	public Cidade buscar(Long id){
-		return cidadeRepository.buscar(id);
+	public Optional<Cidade> buscar(Long id){
+		return cidadeRepository.findById(id);
 	}
 	
 	public Cidade salvar(Cidade cidade){
 		Long estadoId = cidade.getEstado().getId();
-		Estado estado = estadoRepository.buscar(estadoId);
+		Estado estado = estadoRepository.findById(estadoId).orElseThrow(() -> new EntidadeNaoEncontradaException(
+				String.format("Não existe um cadastro de estado com código %d", estadoId)));
 		
-		if(estado == null) {
-			throw new EntidadeNaoEncontradaException(
-					String.format("Não existe um cadastro de estado com código %d", estadoId));
-		}
 		cidade.setEstado(estado);
-		return cidadeRepository.salvar(cidade);
+		return cidadeRepository.save(cidade);
 	}
 	
 	public Cidade atualizar(Cidade cidade){
 		Long estadoId = cidade.getEstado().getId();
-		Estado estado = estadoRepository.buscar(estadoId);
-		
-		if(estado == null) {
-			throw new EntidadeNaoEncontradaException(
-					String.format("Não existe um cadastro de estado com código %d", estadoId));
-		}
+		Estado estado = estadoRepository.findById(estadoId).orElseThrow(() -> new EntidadeNaoEncontradaException(
+				String.format("Não existe um cadastro de estado com código %d", estadoId)));
 		
 		cidade.setEstado(estado);
-		return cidadeRepository.salvar(cidade);
+		return cidadeRepository.save(cidade);
 	}
 	
 	public void remover(Long id){
-		Cidade cidade = cidadeRepository.buscar(id);
+		cidadeRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(
+				String.format("Não existe um cadastro de cidade com código %d", id)));
 		
-		if(cidade == null) {
-			throw new EntidadeNaoEncontradaException(
-					String.format("Não existe um cadastro de cidade com código %d", id));
-		}
-		cidadeRepository.remover(id);
+		cidadeRepository.deleteById(id);
 	}
 	
 	

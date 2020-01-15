@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.controller;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,66 +38,64 @@ public class RestauranteController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Restaurante> buscar(@PathVariable Long id) {
-		Restaurante restaurante = restauranteService.buscar(id);
+		Optional<Restaurante> restaurante = restauranteService.buscar(id);
 
-		if (restaurante != null) {
-			return ResponseEntity.ok().body(restaurante);
+		if (restaurante.isPresent()) {
+			return ResponseEntity.ok().body(restaurante.get());
 		}
 		return ResponseEntity.notFound().build();
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<?> adicionar(@RequestBody Restaurante restaurante){
+	public ResponseEntity<?> adicionar(@RequestBody Restaurante restaurante) {
 		try {
-			restaurante = restauranteService.salvar(restaurante); 
+			restaurante = restauranteService.salvar(restaurante);
 			return ResponseEntity.status(HttpStatus.CREATED).body(restaurante);
-		}catch (EntidadeNaoEncontradaException e) {
+		} catch (EntidadeNaoEncontradaException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	
+
 	@PutMapping("/{id}")
-	public ResponseEntity<?> atualizar(@PathVariable Long id,
-			@RequestBody Restaurante restaurante){
+	public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Restaurante restaurante) {
 		try {
-			Restaurante restauranteAtual = restauranteService.buscar(id); 
-			if(restauranteAtual != null) {
-				BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
-				restauranteAtual = restauranteService.atualizar(restauranteAtual);
-				return ResponseEntity.ok().body(restauranteAtual);
+			Optional<Restaurante> restauranteAtual = restauranteService.buscar(id);
+			if (restauranteAtual.isPresent()) {
+				BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id");
+				Restaurante restauranteSalvo = restauranteService.salvar(restauranteAtual.get());
+				return ResponseEntity.ok().body(restauranteSalvo);
 			}
 			return ResponseEntity.notFound().build();
-		}catch (EntidadeNaoEncontradaException e) {
+		} catch (EntidadeNaoEncontradaException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	
+
 	@PatchMapping("/{id}")
-	public ResponseEntity<?> atualizarParcial(@PathVariable Long id,
-			@RequestBody Map<String, Object> campos){
-		
-		Restaurante restauranteAtual = restauranteService.buscar(id); 
-		if(restauranteAtual == null) {
+	public ResponseEntity<?> atualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos) {
+
+		Optional<Restaurante> restauranteAtual = restauranteService.buscar(id);
+		if (restauranteAtual.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
-		
-		merge(campos, restauranteAtual);
-		
-		return atualizar(id, restauranteAtual);
-		
+
+		merge(campos, restauranteAtual.get());
+
+		return atualizar(id, restauranteAtual.get());
+
 	}
 
 	private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
-		
+
 		dadosOrigem.forEach((propriedade, valor) -> {
 			Field field = ReflectionUtils.findField(Restaurante.class, propriedade);
 			field.setAccessible(true);
 			Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
 			ReflectionUtils.setField(field, restauranteDestino, novoValor);
 		});
-		
+
 	}
 
 }
