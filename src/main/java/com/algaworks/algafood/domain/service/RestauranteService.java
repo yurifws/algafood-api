@@ -49,6 +49,10 @@ public class RestauranteService {
 	public int countPorCozinhaId(Long cozinhaId) {
 		return restauranteRepository.countByCozinhaId(cozinhaId);
 	}
+	
+	public List<Restaurante> buscarPorNomeEFrete(String nome, BigDecimal taxaInicial, BigDecimal taxaFinal){
+		return restauranteRepository.find(nome, taxaInicial, taxaFinal);
+	}
 
 	public Restaurante salvar(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();

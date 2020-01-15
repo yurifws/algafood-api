@@ -67,6 +67,11 @@ public class RestauranteController {
 	public int countPorCozinhaId(@RequestParam Long cozinhaId) {
 		return restauranteService.countPorCozinhaId(cozinhaId);
 	}
+	
+	@GetMapping("/por-nome-e-frete")
+	public List<Restaurante> buscarPorNomeEFrete(@RequestParam String nome,@RequestParam BigDecimal taxaInicial,@RequestParam BigDecimal taxaFinal){
+		return restauranteService.buscarPorNomeEFrete(nome, taxaInicial, taxaFinal);
+	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Restaurante> buscar(@PathVariable Long id) {
