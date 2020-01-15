@@ -48,6 +48,12 @@ public class CozinhaController {
 		}
 		return ResponseEntity.notFound().build();
 	}
+	
+	@GetMapping("/exists")
+	public boolean existsNome(@RequestParam String nome)  {
+		return cozinhaService.existsNome(nome);
+	}
+	
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Cozinha> buscar(@PathVariable Long id) {

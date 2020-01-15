@@ -48,6 +48,25 @@ public class RestauranteController {
 	public List<Restaurante> consultarPorTaxaFrete(@RequestParam String nome, @RequestParam Long cozinhaId) {
 		return restauranteService.buscarPorNomeECozinhaId(nome, cozinhaId);
 	}
+	
+	@GetMapping("/primeiro-por-nome")
+	public ResponseEntity<Restaurante> buscarPrimeiroPorNome(@RequestParam String nome) {
+		Optional<Restaurante> restaurante = restauranteService.buscarPrimeiroPorNome(nome);
+		if (restaurante.isPresent()) {
+			return ResponseEntity.ok(restaurante.get());
+		}
+		return ResponseEntity.notFound().build();
+	}
+	
+	@GetMapping("/top2-por-nome")
+	public List<Restaurante> buscarTop2PorNome(@RequestParam String nome) {
+		return restauranteService.buscarTop2PorNome(nome);
+	}
+	
+	@GetMapping("/count-por-cozinha-id")
+	public int countPorCozinhaId(@RequestParam Long cozinhaId) {
+		return restauranteService.countPorCozinhaId(cozinhaId);
+	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Restaurante> buscar(@PathVariable Long id) {

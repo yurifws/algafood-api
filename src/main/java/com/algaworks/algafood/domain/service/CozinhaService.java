@@ -31,6 +31,10 @@ public class CozinhaService {
 		return cozinhaRepository.findByNome(nome);
 	}
 	
+	public boolean existsNome(String nome){
+		return cozinhaRepository.existsByNome(nome);
+	}
+	
 	public Optional<Cozinha> buscar(Long id) {
 		return cozinhaRepository.findById(id);
 	}

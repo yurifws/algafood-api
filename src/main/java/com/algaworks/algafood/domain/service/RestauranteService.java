@@ -31,11 +31,23 @@ public class RestauranteService {
 	}
 	
 	public List<Restaurante> buscarPorTaxaFrete(BigDecimal taxaInicial, BigDecimal taxaFinal) {
-		return restauranteRepository.findByTaxaFreteBetween(taxaInicial, taxaFinal);
+		return restauranteRepository.queryByTaxaFreteBetween(taxaInicial, taxaFinal);
 	}
 	
 	public List<Restaurante> buscarPorNomeECozinhaId(String nome, Long cozinhaId){
 		return restauranteRepository.findByNomeContainingAndCozinhaId(nome, cozinhaId);
+	}
+	
+	public Optional<Restaurante> buscarPrimeiroPorNome(String nome){
+		return restauranteRepository.findFirstByNomeContaining(nome);
+	}
+	
+	public List<Restaurante> buscarTop2PorNome(String nome){
+		return restauranteRepository.findTop2ByNomeContaining(nome);
+	}
+	
+	public int countPorCozinhaId(Long cozinhaId) {
+		return restauranteRepository.countByCozinhaId(cozinhaId);
 	}
 
 	public Restaurante salvar(Restaurante restaurante) {
