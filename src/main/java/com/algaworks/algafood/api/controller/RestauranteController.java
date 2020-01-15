@@ -69,7 +69,7 @@ public class RestauranteController {
 	}
 	
 	@GetMapping("/por-nome-e-frete")
-	public List<Restaurante> buscarPorNomeEFrete(@RequestParam String nome,@RequestParam BigDecimal taxaInicial,@RequestParam BigDecimal taxaFinal){
+	public List<Restaurante> buscarPorNomeEFrete( String nome, BigDecimal taxaInicial, BigDecimal taxaFinal){
 		return restauranteService.buscarPorNomeEFrete(nome, taxaInicial, taxaFinal);
 	}
 
