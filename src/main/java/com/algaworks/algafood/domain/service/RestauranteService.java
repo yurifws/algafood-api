@@ -35,7 +35,7 @@ public class RestauranteService {
 	}
 	
 	public List<Restaurante> buscarPorNomeECozinhaId(String nome, Long cozinhaId){
-		return restauranteRepository.findByNomeContainingAndCozinhaId(nome, cozinhaId);
+		return restauranteRepository.consultarPorNome(nome, cozinhaId);
 	}
 	
 	public Optional<Restaurante> buscarPrimeiroPorNome(String nome){
