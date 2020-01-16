@@ -78,6 +78,11 @@ public class RestauranteController {
 		return restauranteService.buscarComFreteGratis(nome);
 	}
 	
+	@GetMapping("/primeiro")
+	public Optional<Restaurante> buscarPrimeiro() {
+		return restauranteService.buscarPrimeiro();
+	}
+	
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Restaurante> buscar(@PathVariable Long id) {

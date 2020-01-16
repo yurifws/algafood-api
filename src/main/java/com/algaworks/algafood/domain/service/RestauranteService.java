@@ -57,6 +57,10 @@ public class RestauranteService {
 	public List<Restaurante> buscarComFreteGratis(String nome){
 		return restauranteRepository.findComFreteGratis(nome);
 	}
+	
+	public Optional<Restaurante> buscarPrimeiro(){
+		return restauranteRepository.buscarPrimeiro();
+	}
 
 	public Restaurante salvar(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();
