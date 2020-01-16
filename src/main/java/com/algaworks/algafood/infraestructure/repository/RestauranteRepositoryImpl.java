@@ -1,6 +1,7 @@
 package com.algaworks.algafood.infraestructure.repository;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -12,6 +13,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepositorioQueries;
@@ -21,7 +23,10 @@ public class RestauranteRepositoryImpl implements RestauranteRepositorioQueries{
 	
 	@PersistenceContext
 	private EntityManager entityManager;
-	
+
+	/**
+	 * Com JPQL
+	 */
 //	public List<Restaurante> find(String nome,
 //			BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal){
 //		var jpql = new StringBuilder();
@@ -45,7 +50,9 @@ public class RestauranteRepositoryImpl implements RestauranteRepositorioQueries{
 //		parametros.forEach((chave, valor) -> query.setParameter(chave, valor));
 //		return query.getResultList();
 //	}
-	
+	/**
+	 * Com Criteria API
+	 */
 	public List<Restaurante> find(String nome,
 			BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal){
 
@@ -54,10 +61,18 @@ public class RestauranteRepositoryImpl implements RestauranteRepositorioQueries{
 		
 		Root<Restaurante> root = criteria.from(Restaurante.class); // from Restaurante
 		
-		Predicate predicateNome = builder.like( root.get("nome"), '%' + nome + '%');
-		Predicate predicateTaxaInicial = builder.greaterThanOrEqualTo(root.get("taxaFrete"), taxaFreteInicial);
-		Predicate predicateTaxaFinal = builder.lessThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal);
-		criteria.where(predicateNome, predicateTaxaInicial, predicateTaxaFinal);
+		var predicates = new ArrayList<Predicate>();
+		if(StringUtils.hasText(nome)) {
+			predicates.add(builder.like( root.get("nome"), '%' + nome + '%'));
+		}
+		if(taxaFreteInicial != null) {
+			predicates.add(builder.greaterThanOrEqualTo(root.get("taxaFrete"), taxaFreteInicial));
+		}
+		if(taxaFreteFinal != null) {
+			predicates.add(builder.lessThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal));
+		}
+		
+		criteria.where(predicates.toArray(new Predicate[0]));
 		
 		TypedQuery<Restaurante> query = entityManager.createQuery(criteria);
 		return query.getResultList();
