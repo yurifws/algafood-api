@@ -72,6 +72,12 @@ public class RestauranteController {
 	public List<Restaurante> buscarPorNomeEFrete( String nome, BigDecimal taxaInicial, BigDecimal taxaFinal){
 		return restauranteService.buscarPorNomeEFrete(nome, taxaInicial, taxaFinal);
 	}
+	
+	@GetMapping("/com-frete-gratis")
+	public List<Restaurante> buscarComFreteGratis(String nome){
+		return restauranteService.buscarComFreteGratis(nome);
+	}
+	
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Restaurante> buscar(@PathVariable Long id) {
