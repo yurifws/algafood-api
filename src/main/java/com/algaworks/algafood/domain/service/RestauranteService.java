@@ -1,5 +1,8 @@
 package com.algaworks.algafood.domain.service;
 
+import static com.algaworks.algafood.infraestructure.spec.RestauranteSpecs.comFreteGratis;
+import static com.algaworks.algafood.infraestructure.spec.RestauranteSpecs.comNomeSemelhante;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -12,8 +15,6 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
-import com.algaworks.algafood.infraestructure.spec.RestauranteComFrenteGratisSpec;
-import com.algaworks.algafood.infraestructure.spec.RestauranteComNomeSemelhanteSpec;
 
 @Service
 public class RestauranteService {
@@ -57,9 +58,8 @@ public class RestauranteService {
 	}
 	
 	public List<Restaurante> buscarComFreteGratis(String nome){
-		var comFreteGratis = new RestauranteComFrenteGratisSpec();
-		var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
-		return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
+		return restauranteRepository.findAll(comFreteGratis()
+				.and(comNomeSemelhante(nome)));
 	}
 
 	public Restaurante salvar(Restaurante restaurante) {
