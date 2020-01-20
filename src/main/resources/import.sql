@@ -11,9 +11,9 @@ insert into tb_cidade (id, nome, estado_id) values (1, 'Recife', 1);
 insert into tb_cidade (id, nome, estado_id) values (2, 'São Paulo', 2);
 
 insert into tb_restaurante (nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values ('China in Box', 100.0, 1, UTC_TIMESTAMP, UTC_TIMESTAMP, 1, "50751-567", "Rua Itapemirim", "2209", "Chovena");
-insert into tb_restaurante (nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values ('Coowok', 50.0, 1, UTC_TIMESTAMP, UTC_TIMESTAMP);
-insert into tb_restaurante (nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values ('Matuto', 150.0, 2, UTC_TIMESTAMP, UTC_TIMESTAMP);
-insert into tb_restaurante (nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values ('Haiako', 0.0, 1, UTC_TIMESTAMP, UTC_TIMESTAMP);
+insert into tb_restaurante (nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values ('Coowok', 50.0, 1, UTC_TIMESTAMP, UTC_TIMESTAMP, 1, "50751-567", "Rua Itapemirim", "2209", "Chovena");
+insert into tb_restaurante (nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values ('Matuto', 150.0, 2, UTC_TIMESTAMP, UTC_TIMESTAMP, 1, "50751-567", "Rua Itapemirim", "2209", "Chovena");
+insert into tb_restaurante (nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values ('Haiako', 0.0, 1, UTC_TIMESTAMP, UTC_TIMESTAMP, 1, "50751-567", "Rua Itapemirim", "2209", "Chovena");
 
 insert into tb_forma_pagamento (id, descricao) values (1, 'Cartão de Credito');
 insert into tb_forma_pagamento (id, descricao) values (2, 'Cartão de Debito');
