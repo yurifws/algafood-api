@@ -48,8 +48,8 @@ public class Usuario {
 	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "usuario_grupo_id",
-	joinColumns = @JoinColumn(name = "usuario_id"),
-	inverseJoinColumns = @JoinColumn(name = "grupo_id"))
+		joinColumns = @JoinColumn(name = "usuario_id"),
+		inverseJoinColumns = @JoinColumn(name = "grupo_id"))
 	private List<Grupo> grupos;
 	
 
