@@ -17,7 +17,7 @@ import com.algaworks.algafood.domain.repository.CozinhaRepository;
 public class CozinhaService {
 
 	private static final String MSG_COZINHA_EM_USO = "Cozinha de código %d náo pode ser removida, pois está em uso.";
-	private static final String MSG_COZINHA_NAO_ENCONTRADA = "Não existe um cadastro de cozinha com código %d";
+	public static final String MSG_COZINHA_NAO_ENCONTRADA = "Não existe um cadastro de cozinha com código %d";
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
 
