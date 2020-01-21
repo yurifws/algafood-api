@@ -15,44 +15,48 @@ import com.algaworks.algafood.domain.repository.CozinhaRepository;
 
 @Service
 public class CozinhaService {
-	
+
+	private static final String MSG_COZINHA_EM_USO = "Cozinha de código %d náo pode ser removida, pois está em uso.";
+	private static final String MSG_COZINHA_NAO_ENCONTRADA = "Não existe um cadastro de cozinha com código %d";
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
-	
-	public List<Cozinha> listar(){
+
+	public List<Cozinha> listar() {
 		return cozinhaRepository.findAll();
 	}
-	
-	public List<Cozinha> consultarTodasPorNome(String nome){
+
+	public List<Cozinha> consultarTodasPorNome(String nome) {
 		return cozinhaRepository.findTodasByNomeContaining(nome);
 	}
-	
-	public Optional<Cozinha> consultarPorNome(String nome){
+
+	public Optional<Cozinha> consultarPorNome(String nome) {
 		return cozinhaRepository.findByNome(nome);
 	}
-	
-	public boolean existsNome(String nome){
+
+	public boolean existsNome(String nome) {
 		return cozinhaRepository.existsByNome(nome);
 	}
-	
-	public Optional<Cozinha> buscar(Long id) {
-		return cozinhaRepository.findById(id);
+
+	public Cozinha buscar(Long id) {
+		return cozinhaRepository.findById(id)
+				.orElseThrow(() -> new EntidadeNaoEncontradaException(
+						String.format(MSG_COZINHA_NAO_ENCONTRADA, id)));
 	}
-	
+
 	public Cozinha salvar(Cozinha cozinha) {
 		return cozinhaRepository.save(cozinha);
 	}
-	
+
 	public void remover(Long id) {
 		try {
 			cozinhaRepository.deleteById(id);
-		}catch (EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
-					String.format("Não existe um cadastro de cozinha com código %d", id));
-		}catch (DataIntegrityViolationException e) {
+					String.format(MSG_COZINHA_NAO_ENCONTRADA, id));
+		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
-					String.format("Cozinha de código %d náo pode ser removida, pois está em uso.", id));		
+					String.format(MSG_COZINHA_EM_USO, id));
 		}
 	}
-	
+
 }
