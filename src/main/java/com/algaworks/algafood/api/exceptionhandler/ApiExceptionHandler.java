@@ -2,10 +2,12 @@ package com.algaworks.algafood.api.exceptionhandler;
 
 import java.time.LocalDateTime;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
@@ -13,31 +15,39 @@ import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 
 @ControllerAdvice
-public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
-
-	private Problema preencherProblema(NegocioException e) {
-		return Problema.builder().dataHora(LocalDateTime.now()).mensagem(e.getMessage()).build();
-	}
+public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(EntidadeNaoEncontradaException.class)
-	public ResponseEntity<?> tratarEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e) {
-		Problema problema = preencherProblema(e);
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problema);
-
+	public ResponseEntity<?> tratarEntidadeNaoEncontradaException(EntidadeNaoEncontradaException ex,
+			WebRequest request) {
+		return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 
 	@ExceptionHandler(NegocioException.class)
-	public ResponseEntity<?> tratarNegocioException(NegocioException e) {
-		Problema problema = preencherProblema(e);
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problema);
+	public ResponseEntity<?> tratarNegocioException(NegocioException ex, WebRequest request) {
+		return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 
 	}
 
 	@ExceptionHandler(EntidadeEmUsoException.class)
-	public ResponseEntity<?> tratarEntidadeEmUsoException(EntidadeEmUsoException e) {
-		Problema problema = preencherProblema(e);
-		return ResponseEntity.status(HttpStatus.CONFLICT).body(problema);
+	public ResponseEntity<?> tratarEntidadeEmUsoException(EntidadeEmUsoException ex, WebRequest request) {
+		return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT, request);
 
+	}
+
+	@Override
+	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
+			HttpStatus status, WebRequest request) {
+		if (body == null) {
+			body = preencherProblema(status.getReasonPhrase());
+		} else if (body instanceof String) {
+			body = preencherProblema(String.valueOf(body));
+		}
+		return super.handleExceptionInternal(ex, body, headers, status, request);
+	}
+
+	private Problema preencherProblema(String body) {
+		return Problema.builder().dataHora(LocalDateTime.now()).mensagem(body).build();
 	}
 
 }
