@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.service.CidadeService;
 
@@ -45,7 +46,11 @@ public class CidadeController {
 	public Cidade atualizar(@PathVariable Long id, @RequestBody Cidade cidade) {
 		Cidade cidadeAtual = cidadeService.buscar(id);
 		BeanUtils.copyProperties(cidade, cidadeAtual, "id");
-		return cidadeService.salvar(cidadeAtual);
+		try {
+			return cidadeService.salvar(cidadeAtual);
+		}catch (Exception e) {
+			throw new NegocioException(e.getMessage());
+		}
 	}
 
 	@DeleteMapping("/{id}")

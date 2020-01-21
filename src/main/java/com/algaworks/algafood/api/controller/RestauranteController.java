@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.RestauranteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -99,7 +100,11 @@ public class RestauranteController {
 		Restaurante restauranteAtual = restauranteService.buscar(id);
 		BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "dataCadastro", "endereco",
 				"produtos");
-		return restauranteService.salvar(restauranteAtual);
+		try {
+			return restauranteService.salvar(restauranteAtual);
+		} catch (Exception e) {
+			throw new NegocioException(e.getMessage());
+		}
 	}
 
 	@PatchMapping("/{id}")
