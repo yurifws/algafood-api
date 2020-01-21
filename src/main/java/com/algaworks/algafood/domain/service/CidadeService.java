@@ -5,15 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
 
 @Service
 public class CidadeService {
-
-	private static final String MSG_CIDADE_NAO_ENCONTRADA = "Não existe um cadastro de cidade com código %d";
 
 	@Autowired
 	private CidadeRepository cidadeRepository;
@@ -26,9 +24,7 @@ public class CidadeService {
 	}
 
 	public Cidade buscar(Long id) {
-		return cidadeRepository.findById(id)
-				.orElseThrow(() -> new EntidadeNaoEncontradaException(
-						String.format(MSG_CIDADE_NAO_ENCONTRADA, id)));
+		return cidadeRepository.findById(id).orElseThrow(() -> new CidadeNaoEncontradaException(id));
 	}
 
 	public Cidade salvar(Cidade cidade) {
@@ -39,9 +35,7 @@ public class CidadeService {
 	}
 
 	public void remover(Long id) {
-		cidadeRepository.findById(id)
-				.orElseThrow(() -> new EntidadeNaoEncontradaException(
-						String.format(MSG_CIDADE_NAO_ENCONTRADA, id)));
+		cidadeRepository.findById(id).orElseThrow(() -> new CidadeNaoEncontradaException(id));
 		cidadeRepository.deleteById(id);
 	}
 
