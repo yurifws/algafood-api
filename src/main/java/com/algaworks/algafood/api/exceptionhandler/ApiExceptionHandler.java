@@ -15,6 +15,7 @@ import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
@@ -27,11 +28,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		if (rootCause instanceof InvalidFormatException) {
 			return handleInvalidFormatException((InvalidFormatException) rootCause, headers, status, request);
 		}
+		if (rootCause instanceof PropertyBindingException) {
+			return handlePropertyBindingException((PropertyBindingException) rootCause, headers, status, request);
+		}
 
 		ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
 		String detail = "O corpo da requisição está inválida. Verifique erro de sintaxe.";
 
-		Problem problem = createProblemBuild(status, problemType, detail).build();
+		Problem problem = createProblemBuilder(status, problemType, detail).build();
 		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 	}
 
@@ -46,7 +50,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 				"A propriedade '%s' recebedeu o valor '%s' que é de um tipo inválido. "
 				+ "Corrija e informe um valor compatível com o tipo %s.",
 				path, ex.getValue(), ex.getTargetType().getSimpleName());
-		Problem problem = createProblemBuild(status, problemType, detail).build();
+		Problem problem = createProblemBuilder(status, problemType, detail).build();
+		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+	}
+	
+	private ResponseEntity<Object> handlePropertyBindingException(PropertyBindingException ex, HttpHeaders headers,
+			HttpStatus status, WebRequest request) {
+		ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
+
+		String detail = String.format(
+				"A propriedade '%s' não existe."
+				+ " Corrija ou remova essa propriedade e tente novamente.", ex.getPropertyName());
+		Problem problem = createProblemBuilder(status, problemType, detail).build();
 		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 	}
 
@@ -57,7 +72,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		ProblemType problemType = ProblemType.ENTIDADE_NAO_ENCONTRADA;
 		String detail = ex.getMessage();
 
-		Problem problem = createProblemBuild(status, problemType, detail).build();
+		Problem problem = createProblemBuilder(status, problemType, detail).build();
 		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 	}
 
@@ -67,7 +82,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		ProblemType problemType = ProblemType.ERRO_NEGOCIO;
 		String detail = ex.getMessage();
 
-		Problem problem = createProblemBuild(status, problemType, detail).build();
+		Problem problem = createProblemBuilder(status, problemType, detail).build();
 		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 
 	}
@@ -78,7 +93,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		ProblemType problemType = ProblemType.ENTIDADE_EM_USO;
 		String detail = ex.getMessage();
 
-		Problem problem = createProblemBuild(status, problemType, detail).build();
+		Problem problem = createProblemBuilder(status, problemType, detail).build();
 		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 
 	}
@@ -87,15 +102,22 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
 			HttpStatus status, WebRequest request) {
 		if (body == null) {
-			body = Problem.builder().status(status.value()).title(status.getReasonPhrase()).build();
+			body = Problem.builder()
+					.status(status.value())
+					.title(status.getReasonPhrase()).build();
 		} else if (body instanceof String) {
-			body = Problem.builder().status(status.value()).title((String) body).build();
+			body = Problem.builder()
+					.status(status.value())
+					.title((String) body).build();
 		}
 		return super.handleExceptionInternal(ex, body, headers, status, request);
 	}
 
-	private Problem.ProblemBuilder createProblemBuild(HttpStatus status, ProblemType problemType, String detail) {
-		return Problem.builder().status(status.value()).type(problemType.getUri()).title(problemType.getTitle())
+	private Problem.ProblemBuilder createProblemBuilder(HttpStatus status, ProblemType problemType, String detail) {
+		return Problem.builder()
+				.status(status.value())
+				.type(problemType.getUri())
+				.title(problemType.getTitle())
 				.detail(detail);
 	}
 
