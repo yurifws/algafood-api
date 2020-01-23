@@ -38,19 +38,16 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "tb_restaurante")
 public class Restaurante {
-
+	
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-//	@NotNull
-//	@NotEmpty
 	@NotBlank
 	@Column(nullable = false)
 	private String nome;
 	
-//	@DecimalMin("0")
 	@PositiveOrZero
 	@Column(nullable = false)
 	private BigDecimal taxaFrete;
