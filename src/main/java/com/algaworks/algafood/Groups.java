@@ -2,6 +2,6 @@ package com.algaworks.algafood;
 
 public interface Groups {
 	
-	public interface RestauranteGroup {}
+	public interface CozinhaId {}
 
 }

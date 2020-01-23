@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.algaworks.algafood.Groups.RestauranteGroup;
+import com.algaworks.algafood.Groups.CozinhaId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
@@ -27,7 +27,7 @@ import lombok.EqualsAndHashCode;
 @Table(name = "tb_cozinha")
 public class Cozinha {
 	
-	@NotNull(groups = RestauranteGroup.class)
+	@NotNull(groups = CozinhaId.class)
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
