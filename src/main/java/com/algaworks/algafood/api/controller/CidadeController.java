@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,9 +44,7 @@ public class CidadeController {
 
 	@PutMapping("/{id}")
 	public Cidade atualizar(@PathVariable Long id, @RequestBody @Valid Cidade cidade) {
-		Cidade cidadeAtual = cidadeService.buscar(id);
-		BeanUtils.copyProperties(cidade, cidadeAtual, "id");
-		return cidadeService.salvar(cidadeAtual);
+		return cidadeService.atualizar(id, cidade);
 		
 	}
 

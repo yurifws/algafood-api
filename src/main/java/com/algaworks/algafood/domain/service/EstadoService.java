@@ -2,9 +2,9 @@ package com.algaworks.algafood.domain.service;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
@@ -30,12 +30,17 @@ public class EstadoService {
 	public Estado salvar(Estado estado) {
 		return estadoRepository.save(estado);
 	}
+	
+	public Estado atualizar(Long id, Estado estado) {
+		Estado estadoAtual = buscar(id);
+		BeanUtils.copyProperties(estado, estadoAtual, "id");
+		return salvar(estadoAtual);
+	}
 
 	public void remover(Long id) {
+		buscar(id);
 		try {
 			estadoRepository.deleteById(id);
-		} catch (EmptyResultDataAccessException e) {
-			throw new EstadoNaoEncontradoException(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(String.format(MSG_ESTADO_EM_USO, id));
 		}

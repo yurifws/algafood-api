@@ -9,6 +9,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -32,12 +33,12 @@ public class RestauranteService {
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
-	
-	@Autowired
-	private SmartValidator validator;
 
 	@Autowired
 	private CozinhaService cozinhaService;
+
+	@Autowired
+	private SmartValidator validator;
 
 	public List<Restaurante> listar() {
 		return restauranteRepository.findAll();
@@ -89,6 +90,20 @@ public class RestauranteService {
 			throw new NegocioException(e.getMessage(), e);
 		}
 	}
+	public Restaurante atualizar(Long id, Restaurante restaurante) {
+		Restaurante restauranteAtual = buscar(id);
+		BeanUtils.copyProperties(restaurante, restauranteAtual, 
+				"id", "formasPagamento", "dataCadastro", "endereco", "produtos");
+		return salvar(restauranteAtual);
+	}
+	
+	public Restaurante atualizarParcial(Long id, Map<String, Object> campos, HttpServletRequest request) {
+		Restaurante restauranteAtual = buscar(id);
+		merge(campos, restauranteAtual, request);
+		validate(restauranteAtual);
+		return atualizar(id, restauranteAtual);
+	}
+	
 	
 	public void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
 		ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
