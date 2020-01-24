@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,9 +66,7 @@ public class CozinhaController {
 
 	@PutMapping("/{id}")
 	public Cozinha atualizar(@PathVariable Long id, @RequestBody @Valid Cozinha cozinha) {
-		Cozinha cozinhaAtual = cozinhaService.buscar(id);
-		BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
-		return cozinhaService.salvar(cozinhaAtual);
+		return cozinhaService.atualizar(id, cozinha);
 	}
 
 	@DeleteMapping("/{id}")

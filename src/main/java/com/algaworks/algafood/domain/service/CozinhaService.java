@@ -3,6 +3,7 @@ package com.algaworks.algafood.domain.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -45,7 +46,13 @@ public class CozinhaService {
 	public Cozinha salvar(Cozinha cozinha) {
 		return cozinhaRepository.save(cozinha);
 	}
-
+	
+	public Cozinha atualizar(Long id, Cozinha cozinha) {
+		Cozinha cozinhaAtual = buscar(id);
+		BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
+		return salvar(cozinhaAtual);
+	}
+	
 	public void remover(Long id) {
 		try {
 			cozinhaRepository.deleteById(id);

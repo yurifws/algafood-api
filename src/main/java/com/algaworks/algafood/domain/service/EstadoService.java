@@ -2,6 +2,7 @@ package com.algaworks.algafood.domain.service;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -29,6 +30,12 @@ public class EstadoService {
 
 	public Estado salvar(Estado estado) {
 		return estadoRepository.save(estado);
+	}
+	
+	public Estado atualizar(Long id, Estado estado) {
+		Estado estadoAtual = buscar(id);
+		BeanUtils.copyProperties(estado, estadoAtual, "id");
+		return salvar(estadoAtual);
 	}
 
 	public void remover(Long id) {

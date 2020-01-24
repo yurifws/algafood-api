@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,9 +44,7 @@ public class EstadoController {
 
 	@PutMapping("/{id}")
 	public Estado atualizar(@PathVariable Long id, @RequestBody @Valid Estado estado) {
-		Estado estadoAtual = estadoService.buscar(id);
-		BeanUtils.copyProperties(estado, estadoAtual, "id");
-		return estadoService.salvar(estadoAtual);
+		return estadoService.atualizar(id, estado);
 	}
 
 	@DeleteMapping("/{id}")

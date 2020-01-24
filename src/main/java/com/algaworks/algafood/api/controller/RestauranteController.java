@@ -8,7 +8,6 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -96,21 +95,13 @@ public class RestauranteController {
 
 	@PutMapping("/{id}")
 	public Restaurante atualizar(@PathVariable Long id, @RequestBody @Valid Restaurante restaurante) {
-		Restaurante restauranteAtual = restauranteService.buscar(id);
-		BeanUtils.copyProperties(restaurante, restauranteAtual, 
-				"id", "formasPagamento", "dataCadastro", "endereco", "produtos");
-		return restauranteService.salvar(restauranteAtual);
+		return restauranteService.atualizar(id, restaurante);
 	}
 
 	@PatchMapping("/{id}")
 	public Restaurante atualizarParcial(@PathVariable Long id, 
 			@RequestBody Map<String, Object> campos, HttpServletRequest request) {
-		Restaurante restauranteAtual = restauranteService.buscar(id);
-		restauranteService.merge(campos, restauranteAtual, request);
-		restauranteService.validate(restauranteAtual);
-		return atualizar(id, restauranteAtual);
+			return restauranteService.atualizarParcial(id, campos, request);
 	}
-
-	
 
 }
