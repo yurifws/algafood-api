@@ -1,58 +1,37 @@
 package com.algaworks.algafood;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import javax.validation.ConstraintViolationException;
+import static io.restassured.RestAssured.given;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
-import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.model.Cozinha;
-import com.algaworks.algafood.domain.service.CozinhaService;
-
+import io.restassured.http.ContentType;
+/**
+ * Classe de Teste de API de Cozinhas
+ * @author yuri.fernando.silva
+ *
+ */
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CozinhaServiceIT {
 	
-	@Autowired
-	private CozinhaService cozinhaService;
-
+	@LocalServerPort
+	private int port;
+	
 	@Test
-	public void shouldAtribuirId_WhenCadastarCozinhaComDadosCorretos() {
-		//cenário
-		Cozinha novaCozinha = new Cozinha();
-		novaCozinha.setNome("Mexicana");
-		
-		//ação
-		novaCozinha = cozinhaService.salvar(novaCozinha);
-		
-		//validação
-		assertThat(novaCozinha).isNotNull();
-		assertThat(novaCozinha.getId()).isNotNull();		
-	}
-	
-	@Test(expected = ConstraintViolationException.class)
-	public void shouldFalhar_WhenCadastarCozinhaSemNome() {
-		Cozinha novaCozinha = new Cozinha();
-		novaCozinha.setNome(null);
-		novaCozinha = cozinhaService.salvar(novaCozinha);
-			
-	}
-	
-	@Test(expected = EntidadeEmUsoException.class)
-	public void shouldFalhar_WhenExcluirCozinhaEmUso() {
-		cozinhaService.remover(1L);
-		
-	}
-	
-	@Test(expected = CozinhaNaoEncontradaException.class)
-	public void shouldFalhar_WhenExcluirCozinhaInexistente() {
-		cozinhaService.remover(50L);
+	public void shouldRetornarStatus200_WhenConsultarCozinhas() {
+		given()
+			.basePath("/cozinhas")
+			.port(port)
+			.accept(ContentType.JSON)
+		.when()
+			.get()
+		.then()
+			.statusCode(HttpStatus.OK.value());
 	}
 
 }
