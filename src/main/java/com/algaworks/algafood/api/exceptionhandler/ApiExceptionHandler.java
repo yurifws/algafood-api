@@ -56,7 +56,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 			WebRequest request) {
 		ProblemType problemType = ProblemType.DADOS_INVALIDOS;
 		String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
-		
 		List<Problem.Object> problemObjects = bindingResult.getAllErrors().stream()
 				.map(objectError -> {
 					String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
@@ -71,7 +70,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 						.build();
 				})
 				.collect(Collectors.toList());
-		
 		
 		Problem problem = createProblemBuilder(status, problemType, detail, detail)
 						.objects(problemObjects)
