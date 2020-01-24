@@ -17,7 +17,7 @@ import com.algaworks.algafood.domain.service.CozinhaService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CozinhaServiceTests {
+public class CozinhaServiceIT {
 	
 	@Autowired
 	private CozinhaService cozinhaService;
