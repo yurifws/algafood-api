@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.service.CozinhaService;
 
@@ -21,7 +23,7 @@ public class CozinhaServiceTests {
 	private CozinhaService cozinhaService;
 
 	@Test
-	public void testCadastroCozinhaComSucesso() {
+	public void shouldAtribuirId_WhenCadastarCozinhaComDadosCorretos() {
 		//cenário
 		Cozinha novaCozinha = new Cozinha();
 		novaCozinha.setNome("Mexicana");
@@ -35,11 +37,22 @@ public class CozinhaServiceTests {
 	}
 	
 	@Test(expected = ConstraintViolationException.class)
-	public void testCadastroCozinhaSemNome() {
+	public void shouldFalhar_WhenCadastarCozinhaSemNome() {
 		Cozinha novaCozinha = new Cozinha();
 		novaCozinha.setNome(null);
 		novaCozinha = cozinhaService.salvar(novaCozinha);
 			
+	}
+	
+	@Test(expected = EntidadeEmUsoException.class)
+	public void shouldFalhar_WhenExcluirCozinhaEmUso() {
+		cozinhaService.remover(1L);
+		
+	}
+	
+	@Test(expected = CozinhaNaoEncontradaException.class)
+	public void shouldFalhar_WhenExcluirCozinhaInexistente() {
+		cozinhaService.remover(50L);
 	}
 
 }
