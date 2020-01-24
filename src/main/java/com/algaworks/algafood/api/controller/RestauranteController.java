@@ -107,6 +107,7 @@ public class RestauranteController {
 			@RequestBody Map<String, Object> campos, HttpServletRequest request) {
 		Restaurante restauranteAtual = restauranteService.buscar(id);
 		restauranteService.merge(campos, restauranteAtual, request);
+		restauranteService.validate(restauranteAtual);
 		return atualizar(id, restauranteAtual);
 	}
 
