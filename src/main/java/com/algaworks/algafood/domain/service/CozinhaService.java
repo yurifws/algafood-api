@@ -26,7 +26,7 @@ public class CozinhaService {
 	}
 
 	public List<Cozinha> consultarTodasPorNome(String nome) {
-		return cozinhaRepository.findTodasByNomeContaining(nome);
+		return cozinhaRepository.findAllByNomeContaining(nome);
 	}
 
 	public Optional<Cozinha> consultarPorNome(String nome) {

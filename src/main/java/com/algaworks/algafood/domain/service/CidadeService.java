@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
@@ -28,10 +30,14 @@ public class CidadeService {
 	}
 
 	public Cidade salvar(Cidade cidade) {
-		Long estadoId = cidade.getEstado().getId();
-		Estado estado = estadoService.buscar(estadoId);
-		cidade.setEstado(estado);
-		return cidadeRepository.save(cidade);
+		try {
+			Long estadoId = cidade.getEstado().getId();
+			Estado estado = estadoService.buscar(estadoId);
+			cidade.setEstado(estado);
+			return cidadeRepository.save(cidade);
+		} catch (EntidadeNaoEncontradaException e) {
+			throw new NegocioException(e.getMessage(), e);
+		}
 	}
 
 	public void remover(Long id) {
