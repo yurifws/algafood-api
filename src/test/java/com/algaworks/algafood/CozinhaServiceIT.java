@@ -1,8 +1,9 @@
 package com.algaworks.algafood;
 
-import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,7 +11,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 /**
  * Classe de Teste de API de Cozinhas
@@ -22,15 +22,18 @@ import io.restassured.http.ContentType;
 public class CozinhaServiceIT {
 	
 	@LocalServerPort
-	private int port;
+	private int localServerPort;
+	
+	@Before
+	public void setUp() {
+		enableLoggingOfRequestAndResponseIfValidationFails();
+		basePath = "/cozinhas";
+		port = localServerPort;
+	}
 	
 	@Test
 	public void shouldRetornarStatus200_WhenConsultarCozinhas() {
-		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-		
 		given()
-			.basePath("/cozinhas")
-			.port(port)
 			.accept(ContentType.JSON)
 		.when()
 			.get()
@@ -40,11 +43,7 @@ public class CozinhaServiceIT {
 	
 	@Test
 	public void shouldConter3Cozinhas_WhenConsultarCozinhas() {
-		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-		
 		given()
-			.basePath("/cozinhas")
-			.port(port)
 			.accept(ContentType.JSON)
 		.when()
 			.get()
