@@ -1,6 +1,7 @@
 package com.algaworks.algafood;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +36,21 @@ public class CozinhaServiceIT {
 			.get()
 		.then()
 			.statusCode(HttpStatus.OK.value());
+	}
+	
+	@Test
+	public void shouldConter3Cozinhas_WhenConsultarCozinhas() {
+		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+		
+		given()
+			.basePath("/cozinhas")
+			.port(port)
+			.accept(ContentType.JSON)
+		.when()
+			.get()
+		.then()
+			.body("", hasSize(3))
+			.body("nome", hasItems("Tailandesa", "Indiana"));
 	}
 
 }
