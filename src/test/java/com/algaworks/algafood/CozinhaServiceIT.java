@@ -3,7 +3,6 @@ package com.algaworks.algafood;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
-import org.flywaydb.core.Flyway;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +12,10 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.algaworks.algafood.domain.model.Cozinha;
+import com.algaworks.algafood.domain.service.CozinhaService;
+import com.algaworks.algafood.util.DatabaseCleaner;
 
 import io.restassured.http.ContentType;
 /**
@@ -29,7 +32,10 @@ public class CozinhaServiceIT {
 	private int localServerPort;
 	
 	@Autowired
-	private Flyway flyway;
+	private DatabaseCleaner databaseCleaner;
+	
+	@Autowired
+	private CozinhaService cozinhaService; 
 	
 	@Before
 	public void setUp() {
@@ -37,7 +43,9 @@ public class CozinhaServiceIT {
 		basePath = "/cozinhas";
 		port = localServerPort;
 		
-		flyway.migrate();
+		databaseCleaner.clearTables();
+		preparaDados();
+		
 	}
 	
 	@Test
@@ -58,7 +66,7 @@ public class CozinhaServiceIT {
 			.get()
 		.then()
 			.body("", hasSize(3))
-			.body("nome", hasItems("Tailandesa", "Indiana"));
+			.body("nome", hasItems("Italiana", "Japonesa", "Brasileira"));
 	}
 	
 	@Test
@@ -71,6 +79,19 @@ public class CozinhaServiceIT {
 			.post()
 		.then()
 			.statusCode(HttpStatus.CREATED.value());
+	}
+	
+	private void preparaDados() {
+		Cozinha cozinha = new Cozinha();
+		cozinha.setNome("Italiana");
+		cozinhaService.salvar(cozinha);
+		Cozinha cozinha2 = new Cozinha();
+		cozinha2.setNome("Japonesa");
+		cozinhaService.salvar(cozinha2);
+		Cozinha cozinha3 = new Cozinha();
+		cozinha3.setNome("Brasileira");
+		cozinhaService.salvar(cozinha3);
+		
 	}
 
 }
