@@ -73,7 +73,7 @@ public class CozinhaServiceIT {
 	}
 	
 	@Test
-	public void shouldConter3Cozinhas_WhenConsultarCozinhas() {
+	public void shouldConterXCozinhas_WhenConsultarCozinhas() {
 		given()
 			.accept(ContentType.JSON)
 		.when()
