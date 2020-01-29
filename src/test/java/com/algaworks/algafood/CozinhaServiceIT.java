@@ -81,6 +81,29 @@ public class CozinhaServiceIT {
 			.statusCode(HttpStatus.CREATED.value());
 	}
 	
+	@Test
+	public void shouldRetornarRespostaEStatusCorretos_WhenConsultarCozinhaExistente() {
+		given()
+			.pathParam("cozinhaId", 3)
+			.accept(ContentType.JSON)
+		.when()
+			.get("/{cozinhaId}")
+		.then()
+			.statusCode(HttpStatus.OK.value())
+			.body("nome", equalTo("Brasileira"));
+	}
+	
+	@Test
+	public void shouldRetornarStatus404_WhenConsultarCozinhaInexistente() {
+		given()
+			.pathParam("cozinhaId", 100)
+			.accept(ContentType.JSON)
+		.when()
+			.get("/{cozinhaId}")
+		.then()
+			.statusCode(HttpStatus.NOT_FOUND.value());
+	}
+	
 	private void preparaDados() {
 		Cozinha cozinha = new Cozinha();
 		cozinha.setNome("Italiana");
