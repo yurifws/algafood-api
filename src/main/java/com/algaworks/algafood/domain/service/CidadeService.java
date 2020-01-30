@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
@@ -34,6 +35,7 @@ public class CidadeService {
 		return cidadeRepository.findById(id).orElseThrow(() -> new CidadeNaoEncontradaException(id));
 	}
 
+	@Transactional
 	public Cidade salvar(Cidade cidade) {
 		try {
 			Long estadoId = cidade.getEstado().getId();
@@ -45,6 +47,7 @@ public class CidadeService {
 		}
 	}
 
+	@Transactional
 	public Cidade atualizar(Long id, Cidade cidade) {
 		Cidade cidadeAtual = buscar(id);
 		BeanUtils.copyProperties(cidade, cidadeAtual, "id");
@@ -52,6 +55,7 @@ public class CidadeService {
 
 	}
 
+	@Transactional
 	public void remover(Long id) {
 		buscar(id);
 		try {
@@ -59,6 +63,7 @@ public class CidadeService {
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(String.format(MSG_CIDADE_EM_USO, id));
 		}
+		
 	}
 
 }

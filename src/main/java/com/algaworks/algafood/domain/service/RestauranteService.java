@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.SmartValidator;
@@ -80,6 +81,7 @@ public class RestauranteService {
 		return restauranteRepository.buscarPrimeiro();
 	}
 
+	@Transactional
 	public Restaurante salvar(Restaurante restaurante) {
 		try {
 			Long cozinhaId = restaurante.getCozinha().getId();
@@ -90,6 +92,8 @@ public class RestauranteService {
 			throw new NegocioException(e.getMessage(), e);
 		}
 	}
+	
+	@Transactional
 	public Restaurante atualizar(Long id, Restaurante restaurante) {
 		Restaurante restauranteAtual = buscar(id);
 		BeanUtils.copyProperties(restaurante, restauranteAtual, 
@@ -97,6 +101,8 @@ public class RestauranteService {
 		return salvar(restauranteAtual);
 	}
 	
+	
+	@Transactional
 	public Restaurante atualizarParcial(Long id, Map<String, Object> campos, HttpServletRequest request) {
 		Restaurante restauranteAtual = buscar(id);
 		merge(campos, restauranteAtual, request);
