@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -22,7 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafood.api.model.RestauranteDTO;
+import com.algaworks.algafood.api.model.CozinhaModel;
+import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.RestauranteService;
 
@@ -34,8 +36,8 @@ public class RestauranteController {
 	private RestauranteService restauranteService;
 
 	@GetMapping
-	public List<Restaurante> listar() {
-		return restauranteService.listar();
+	public List<RestauranteModel> listar() {
+		return toCollectionModel(restauranteService.listar());
 	}
 
 	@GetMapping("/por-taxa-frete")
@@ -84,23 +86,19 @@ public class RestauranteController {
 	}
 
 	@GetMapping("/{id}")
-	public RestauranteDTO buscar(@PathVariable Long id) {
-		Restaurante restaurante = restauranteService.buscar(id);
-		
-		RestauranteDTO dto = null;
-		return dto;
-		
+	public RestauranteModel buscar(@PathVariable Long id) {
+		return toModel(restauranteService.buscar(id));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Restaurante adicionar(@RequestBody @Valid Restaurante restaurante) {
-		return restauranteService.salvar(restaurante);
+	public RestauranteModel adicionar(@RequestBody @Valid Restaurante restaurante) {
+		return toModel(restauranteService.salvar(restaurante));
 	}
 
 	@PutMapping("/{id}")
-	public Restaurante atualizar(@PathVariable Long id, @RequestBody @Valid Restaurante restaurante) {
-		return restauranteService.atualizar(id, restaurante);
+	public RestauranteModel atualizar(@PathVariable Long id, @RequestBody @Valid Restaurante restaurante) {
+		return toModel(restauranteService.atualizar(id, restaurante));
 	}
 
 	@PatchMapping("/{id}")
@@ -108,5 +106,25 @@ public class RestauranteController {
 			@RequestBody Map<String, Object> campos, HttpServletRequest request) {
 			return restauranteService.atualizarParcial(id, campos, request);
 	}
+	
+	private RestauranteModel toModel(Restaurante restaurante) {
+		CozinhaModel cozinhaModel = new CozinhaModel();
+		cozinhaModel.setId(restaurante.getCozinha().getId());
+		cozinhaModel.setNome(restaurante.getCozinha().getNome());
+		
+		RestauranteModel restauranteModel = new RestauranteModel();
+		restauranteModel.setId(restaurante.getId());
+		restauranteModel.setNome(restaurante.getNome());
+		restauranteModel.setTaxaFrete(restaurante.getTaxaFrete());
+		restauranteModel.setCozinha(cozinhaModel);
+		return restauranteModel;
+	}
+	
+	private List<RestauranteModel> toCollectionModel(List<Restaurante> restaurantes) {
+		return restaurantes.stream()
+				.map(restaurante -> toModel(restaurante))
+				.collect(Collectors.toList());
+	}
+		
 
 }
