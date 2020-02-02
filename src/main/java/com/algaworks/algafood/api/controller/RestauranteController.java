@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.model.RestauranteDTO;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.RestauranteService;
 
@@ -83,8 +84,12 @@ public class RestauranteController {
 	}
 
 	@GetMapping("/{id}")
-	public Restaurante buscar(@PathVariable Long id) {
-		return restauranteService.buscar(id);
+	public RestauranteDTO buscar(@PathVariable Long id) {
+		Restaurante restaurante = restauranteService.buscar(id);
+		
+		RestauranteDTO dto = null;
+		return dto;
+		
 	}
 
 	@PostMapping
