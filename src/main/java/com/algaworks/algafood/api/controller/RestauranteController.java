@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -23,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafood.api.model.CozinhaModel;
+import com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
 import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.domain.model.Cozinha;
@@ -37,9 +36,12 @@ public class RestauranteController {
 	@Autowired
 	private RestauranteService restauranteService;
 
+	@Autowired
+	private RestauranteModelAssembler restauranteModelAssembler;
+
 	@GetMapping
 	public List<RestauranteModel> listar() {
-		return toCollectionModel(restauranteService.listar());
+		return restauranteModelAssembler.toCollectionModel(restauranteService.listar());
 	}
 
 	@GetMapping("/por-taxa-frete")
@@ -89,46 +91,27 @@ public class RestauranteController {
 
 	@GetMapping("/{id}")
 	public RestauranteModel buscar(@PathVariable Long id) {
-		return toModel(restauranteService.buscar(id));
+		return restauranteModelAssembler.toModel(restauranteService.buscar(id));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
 		Restaurante restaurante = toDomainObject(restauranteInput);
-		return toModel(restauranteService.salvar(restaurante));
+		return restauranteModelAssembler.toModel(restauranteService.salvar(restaurante));
 	}
 
 
 	@PutMapping("/{id}")
 	public RestauranteModel atualizar(@PathVariable Long id, @RequestBody @Valid RestauranteInput restauranteInput) {
 		Restaurante restaurante = toDomainObject(restauranteInput);
-		return toModel(restauranteService.atualizar(id, restaurante));
+		return restauranteModelAssembler.toModel(restauranteService.atualizar(id, restaurante));
 	}
 
 	@PatchMapping("/{id}")
 	public Restaurante atualizarParcial(@PathVariable Long id, 
 			@RequestBody Map<String, Object> campos, HttpServletRequest request) {
 			return restauranteService.atualizarParcial(id, campos, request);
-	}
-	
-	private RestauranteModel toModel(Restaurante restaurante) {
-		CozinhaModel cozinhaModel = new CozinhaModel();
-		cozinhaModel.setId(restaurante.getCozinha().getId());
-		cozinhaModel.setNome(restaurante.getCozinha().getNome());
-		
-		RestauranteModel restauranteModel = new RestauranteModel();
-		restauranteModel.setId(restaurante.getId());
-		restauranteModel.setNome(restaurante.getNome());
-		restauranteModel.setTaxaFrete(restaurante.getTaxaFrete());
-		restauranteModel.setCozinha(cozinhaModel);
-		return restauranteModel;
-	}
-	
-	private List<RestauranteModel> toCollectionModel(List<Restaurante> restaurantes) {
-		return restaurantes.stream()
-				.map(restaurante -> toModel(restaurante))
-				.collect(Collectors.toList());
 	}
 	
 
