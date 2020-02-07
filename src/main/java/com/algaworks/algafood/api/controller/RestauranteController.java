@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.assembler.RestauranteInputDisassembler;
 import com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
 import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
-import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.RestauranteService;
 
@@ -38,6 +38,9 @@ public class RestauranteController {
 
 	@Autowired
 	private RestauranteModelAssembler restauranteModelAssembler;
+	
+	@Autowired
+	private RestauranteInputDisassembler restauranteInputDisassembler;
 
 	@GetMapping
 	public List<RestauranteModel> listar() {
@@ -97,14 +100,14 @@ public class RestauranteController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
-		Restaurante restaurante = toDomainObject(restauranteInput);
+		Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 		return restauranteModelAssembler.toModel(restauranteService.salvar(restaurante));
 	}
 
 
 	@PutMapping("/{id}")
 	public RestauranteModel atualizar(@PathVariable Long id, @RequestBody @Valid RestauranteInput restauranteInput) {
-		Restaurante restaurante = toDomainObject(restauranteInput);
+		Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 		return restauranteModelAssembler.toModel(restauranteService.atualizar(id, restaurante));
 	}
 
@@ -113,19 +116,5 @@ public class RestauranteController {
 			@RequestBody Map<String, Object> campos, HttpServletRequest request) {
 			return restauranteService.atualizarParcial(id, campos, request);
 	}
-	
-
-	private Restaurante toDomainObject(@Valid RestauranteInput restauranteInput) {
-		Cozinha cozinha = new Cozinha();
-		cozinha.setId(restauranteInput.getCozinha().getId());
-		
-		Restaurante restaurante = new Restaurante();
-		restaurante.setId(restauranteInput.getId());
-		restaurante.setNome(restauranteInput.getNome());
-		restaurante.setTaxaFrete(restauranteInput.getTaxaFrete());
-		restaurante.setCozinha(cozinha);
-		return restaurante;
-	}
-		
 
 }
