@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.model.CozinhaModel;
 import com.algaworks.algafood.api.model.RestauranteModel;
+import com.algaworks.algafood.api.model.input.RestauranteInput;
+import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.RestauranteService;
 
@@ -92,12 +94,15 @@ public class RestauranteController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public RestauranteModel adicionar(@RequestBody @Valid Restaurante restaurante) {
+	public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
+		Restaurante restaurante = toDomainObject(restauranteInput);
 		return toModel(restauranteService.salvar(restaurante));
 	}
 
+
 	@PutMapping("/{id}")
-	public RestauranteModel atualizar(@PathVariable Long id, @RequestBody @Valid Restaurante restaurante) {
+	public RestauranteModel atualizar(@PathVariable Long id, @RequestBody @Valid RestauranteInput restauranteInput) {
+		Restaurante restaurante = toDomainObject(restauranteInput);
 		return toModel(restauranteService.atualizar(id, restaurante));
 	}
 
@@ -124,6 +129,19 @@ public class RestauranteController {
 		return restaurantes.stream()
 				.map(restaurante -> toModel(restaurante))
 				.collect(Collectors.toList());
+	}
+	
+
+	private Restaurante toDomainObject(@Valid RestauranteInput restauranteInput) {
+		Cozinha cozinha = new Cozinha();
+		cozinha.setId(restauranteInput.getCozinha().getId());
+		
+		Restaurante restaurante = new Restaurante();
+		restaurante.setId(restauranteInput.getId());
+		restaurante.setNome(restauranteInput.getNome());
+		restaurante.setTaxaFrete(restauranteInput.getTaxaFrete());
+		restaurante.setCozinha(cozinha);
+		return restaurante;
 	}
 		
 

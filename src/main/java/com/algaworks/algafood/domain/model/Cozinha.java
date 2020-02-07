@@ -11,9 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
-import com.algaworks.algafood.core.validation.Groups.CozinhaId;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import lombok.Data;
@@ -26,7 +24,7 @@ import lombok.EqualsAndHashCode;
 @Table(name = "tb_cozinha")
 public class Cozinha {
 	
-	@NotNull(groups = CozinhaId.class)
+	//@NotNull(groups = CozinhaId.class)
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
