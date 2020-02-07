@@ -14,8 +14,6 @@ import lombok.Setter;
 @Setter
 public class RestauranteInput {
 	
-	private Long id;
-	
 	@NotBlank(message = "Nome é obrigatório")
 	private String nome;
 	

@@ -2,17 +2,14 @@ package com.algaworks.algafood.api.controller;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -107,14 +104,9 @@ public class RestauranteController {
 
 	@PutMapping("/{id}")
 	public RestauranteModel atualizar(@PathVariable Long id, @RequestBody @Valid RestauranteInput restauranteInput) {
-		Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
-		return restauranteModelAssembler.toModel(restauranteService.atualizar(id, restaurante));
-	}
-
-	@PatchMapping("/{id}")
-	public Restaurante atualizarParcial(@PathVariable Long id, 
-			@RequestBody Map<String, Object> campos, HttpServletRequest request) {
-			return restauranteService.atualizarParcial(id, campos, request);
+		Restaurante restauranteAtual = restauranteService.buscar(id);
+		restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
+		return restauranteModelAssembler.toModel(restauranteService.salvar(restauranteAtual));
 	}
 
 }
