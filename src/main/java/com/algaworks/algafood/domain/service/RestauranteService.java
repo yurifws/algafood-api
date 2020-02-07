@@ -24,9 +24,6 @@ public class RestauranteService {
 	@Autowired
 	private CozinhaService cozinhaService;
 
-//	@Autowired
-//	private SmartValidator validator;
-
 	public List<Restaurante> listar() {
 		return restauranteRepository.findAll();
 	}
@@ -79,46 +76,4 @@ public class RestauranteService {
 		}
 	}
 	
-	
-//	@Transactional
-//	public Restaurante atualizarParcial(Long id, Map<String, Object> campos, HttpServletRequest request) {
-//		Restaurante restauranteAtual = buscar(id);
-//		merge(campos, restauranteAtual, request);
-//		validate(restauranteAtual);
-//		return salvar(restauranteAtual);
-//	}
-//	
-//	
-//	public void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
-//		ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
-//		
-//		try {
-//			ObjectMapper objectMapper = new ObjectMapper();
-//			objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
-//			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-//
-//			Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
-//
-//			dadosOrigem.forEach((propriedade, valor) -> {
-//				Field field = ReflectionUtils.findField(Restaurante.class, propriedade);
-//				field.setAccessible(true);
-//				Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
-//				ReflectionUtils.setField(field, restauranteDestino, novoValor);
-//			});
-//		} catch (IllegalArgumentException ex) {
-//			Throwable rootCause = ExceptionUtils.getRootCause(ex);
-//			throw new  HttpMessageNotReadableException(ex.getMessage(), rootCause, serverHttpRequest);
-//		}
-//
-//	}
-//	
-//	public void validate(Restaurante restaurante) {
-//		BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, "restaurante");
-//		validator.validate(restaurante, bindingResult);
-//		
-//		if(bindingResult.hasErrors()) {
-//			throw new ValidacaoException(bindingResult);
-//		}
-//	}
-//
 }
