@@ -39,19 +39,12 @@ public class Restaurante {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	//@NotBlank(message = "Nome é obrigatório")
 	@Column(nullable = false)
 	private String nome;
 	
-	//@NotNull
-	//@PositiveOrZero
-	//@Multiplo(numero = 5)
 	@Column(nullable = false)
 	private BigDecimal taxaFrete;
 	
-	//@Valid
-	//@ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
-	//@NotNull
 	@ManyToOne
 	@JoinColumn(name = "cozinha_id", nullable = false)
 	private Cozinha cozinha;
@@ -67,6 +60,8 @@ public class Restaurante {
 	@Embedded
 	private Endereco endereco;
 	
+	private Boolean ativo = true;
+	
 	@ManyToMany
 	@JoinTable(name = "tb_restaurante_forma_pagamento",
 			joinColumns = @JoinColumn(name = "restaurante_id"), 
@@ -76,4 +71,10 @@ public class Restaurante {
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos = new ArrayList<>(0);
 
+	public void ativar() {
+		this.ativo = true;
+	}
+	public void inativar() {
+		this.ativo = false;
+	}
 }

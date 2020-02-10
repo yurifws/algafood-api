@@ -76,4 +76,16 @@ public class RestauranteService {
 		}
 	}
 	
+	@Transactional
+	public void ativar(Long id) {
+		Restaurante restauranteAtual = buscar(id);
+		restauranteAtual.ativar();
+	}
+	
+	@Transactional
+	public void inativar(Long id) {
+		Restaurante restauranteAtual = buscar(id);
+		restauranteAtual.inativar();
+	}
+	
 }
