@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.assembler.CidadeInputDisassembler;
+import com.algaworks.algafood.api.assembler.CidadeModelAssembler;
+import com.algaworks.algafood.api.model.CidadeModel;
+import com.algaworks.algafood.api.model.input.CidadeInput;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.service.CidadeService;
 
@@ -25,26 +29,35 @@ public class CidadeController {
 
 	@Autowired
 	private CidadeService cidadeService;
+	
+	@Autowired
+	private CidadeModelAssembler cidadeModelAssembler;
+	
+	@Autowired
+	private CidadeInputDisassembler cidadeInputDisassembler;
 
 	@GetMapping
-	public List<Cidade> listar() {
-		return cidadeService.listar();
+	public List<CidadeModel> listar() {
+		return cidadeModelAssembler.toCollectionModel(cidadeService.listar());
 	}
 
 	@GetMapping("/{id}")
-	public Cidade buscar(@PathVariable Long id) {
-		return cidadeService.buscar(id);
+	public CidadeModel buscar(@PathVariable Long id) {
+		return cidadeModelAssembler.toModel(cidadeService.buscar(id));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cidade adicionar(@RequestBody @Valid Cidade cidade) {
-		return cidadeService.salvar(cidade);
+	public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
+		Cidade cidade = cidadeInputDisassembler.toDomainObject(cidadeInput);
+		return cidadeModelAssembler.toModel(cidadeService.salvar(cidade));
 	}
 
 	@PutMapping("/{id}")
-	public Cidade atualizar(@PathVariable Long id, @RequestBody @Valid Cidade cidade) {
-		return cidadeService.atualizar(id, cidade);
+	public CidadeModel atualizar(@PathVariable Long id, @RequestBody @Valid CidadeInput cidadeInput) {
+		Cidade cidadeAtual = cidadeService.buscar(id);
+		cidadeInputDisassembler.copyToDomainObject(cidadeInput, cidadeAtual);
+		return cidadeModelAssembler.toModel(cidadeService.salvar(cidadeAtual));
 		
 	}
 

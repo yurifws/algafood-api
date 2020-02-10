@@ -38,12 +38,7 @@ public class RestauranteController {
 	
 	@Autowired
 	private RestauranteInputDisassembler restauranteInputDisassembler;
-
-	@GetMapping
-	public List<RestauranteModel> listar() {
-		return restauranteModelAssembler.toCollectionModel(restauranteService.listar());
-	}
-
+	
 	@GetMapping("/por-taxa-frete")
 	public List<Restaurante> consultarPorTaxaFrete(@RequestParam BigDecimal taxaInicial,
 			@RequestParam BigDecimal taxaFinal) {
@@ -87,6 +82,11 @@ public class RestauranteController {
 	@GetMapping("/primeiro")
 	public Optional<Restaurante> buscarPrimeiro() {
 		return restauranteService.buscarPrimeiro();
+	}
+
+	@GetMapping
+	public List<RestauranteModel> listar() {
+		return restauranteModelAssembler.toCollectionModel(restauranteService.listar());
 	}
 
 	@GetMapping("/{id}")

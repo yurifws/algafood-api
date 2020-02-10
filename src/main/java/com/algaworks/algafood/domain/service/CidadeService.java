@@ -2,7 +2,6 @@ package com.algaworks.algafood.domain.service;
 
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -47,15 +46,7 @@ public class CidadeService {
 		}
 	}
 
-	@Transactional
-	public Cidade atualizar(Long id, Cidade cidade) {
-		Cidade cidadeAtual = buscar(id);
-		BeanUtils.copyProperties(cidade, cidadeAtual, "id");
-		return salvar(cidadeAtual);
 
-	}
-
-	@Transactional
 	public void remover(Long id) {
 		buscar(id);
 		try {
