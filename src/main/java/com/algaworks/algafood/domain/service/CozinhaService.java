@@ -47,9 +47,11 @@ public class CozinhaService {
 		return cozinhaRepository.save(cozinha);
 	}
 	
+	@Transactional
 	public void remover(Long id) {
 		try {
 			cozinhaRepository.deleteById(id);
+			cozinhaRepository.flush();
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
 					String.format(MSG_COZINHA_EM_USO, id));

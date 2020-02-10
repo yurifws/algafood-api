@@ -46,11 +46,11 @@ public class CidadeService {
 		}
 	}
 
-
+	@Transactional
 	public void remover(Long id) {
-		buscar(id);
 		try {
 			cidadeRepository.deleteById(id);
+			cidadeRepository.flush();
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(String.format(MSG_CIDADE_EM_USO, id));
 		}

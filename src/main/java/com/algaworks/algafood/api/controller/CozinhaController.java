@@ -39,6 +39,16 @@ public class CozinhaController {
 	@Autowired
 	private CozinhaInputDisassembler cozinhaInputDisassembler;
 
+	@GetMapping
+	public List<CozinhaModel> listar() {
+		return cozinhaModelAssembler.toCollectionModel(cozinhaService.listar());
+	}
+
+	@GetMapping("/{id}")
+	public CozinhaModel buscar(@PathVariable Long id) {
+		return cozinhaModelAssembler.toModel(cozinhaService.buscar(id));
+	}
+	
 	@GetMapping("/por-nome")
 	public List<Cozinha> consultarPorNome(@RequestParam("nome") String nome) {
 		return cozinhaService.consultarTodasPorNome(nome);
@@ -56,16 +66,6 @@ public class CozinhaController {
 	@GetMapping("/exists")
 	public boolean existsNome(@RequestParam String nome) {
 		return cozinhaService.existsNome(nome);
-	}
-	
-	@GetMapping
-	public List<CozinhaModel> listar() {
-		return cozinhaModelAssembler.toCollectionModel(cozinhaService.listar());
-	}
-
-	@GetMapping("/{id}")
-	public CozinhaModel buscar(@PathVariable Long id) {
-		return cozinhaModelAssembler.toModel(cozinhaService.buscar(id));
 	}
 
 	@PostMapping

@@ -32,9 +32,11 @@ public class EstadoService {
 		return estadoRepository.save(estado);
 	}
 
+	@Transactional
 	public void remover(Long id) {
 		try {
 			estadoRepository.deleteById(id);
+			estadoRepository.flush();
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(String.format(MSG_ESTADO_EM_USO, id));
 		}
