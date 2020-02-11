@@ -8,7 +8,6 @@ import com.algaworks.algafood.domain.repository.FormaPagamentoRepository;
 @Service
 public class FormaPagamentoService {
 	
-
 	private static final String MSG_ESTADO_EM_USO = "Forma de pagamento de código %d náo pode ser removida, pois está em uso.";
 	
 	@Autowired
