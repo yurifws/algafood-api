@@ -14,13 +14,14 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 
 @Service
-public class CozinhaService {
+public class CozinhaService implements IService<Cozinha>{
 
 	private static final String MSG_COZINHA_EM_USO = "Cozinha de código %d náo pode ser removida, pois está em uso.";
 	
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
 
+	@Override
 	public List<Cozinha> listar() {
 		return cozinhaRepository.findAll();
 	}
@@ -37,16 +38,18 @@ public class CozinhaService {
 		return cozinhaRepository.existsByNome(nome);
 	}
 
+	@Override
 	public Cozinha buscar(Long id) {
-		return cozinhaRepository.findById(id)
-				.orElseThrow(() -> new CozinhaNaoEncontradaException(id));
+		return cozinhaRepository.findById(id).orElseThrow(() -> new CozinhaNaoEncontradaException(id));
 	}
 
+	@Override
 	@Transactional
 	public Cozinha salvar(Cozinha cozinha) {
 		return cozinhaRepository.save(cozinha);
 	}
 	
+	@Override
 	@Transactional
 	public void remover(Long id) {
 		try {

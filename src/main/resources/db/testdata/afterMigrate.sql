@@ -59,3 +59,5 @@ insert into tb_restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) 
 insert into tb_produto (id, nome, descricao, preco, ativo, restaurante_id) values (1, 'Guarana', 'Guarana feito dos alpes', 7.0, true, 1);
 insert into tb_produto (id, nome, descricao, preco, ativo, restaurante_id) values (2, 'Suco', 'Suco feito dos alpes', 5.0, true, 1);
 insert into tb_produto (id, nome, descricao, preco, ativo, restaurante_id) values (3, 'Sanduiche', 'Sanduiche feito dos alpes', 10.0, true, 2);
+
+insert into tb_grupo (nome) values ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');

@@ -17,7 +17,7 @@ import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 
 @Service
-public class RestauranteService {
+public class RestauranteService implements IService<Restaurante>{
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
@@ -28,10 +28,12 @@ public class RestauranteService {
 	@Autowired
 	private CidadeService cidadeService;
 
+	@Override
 	public List<Restaurante> listar() {
 		return restauranteRepository.findAll();
 	}
 
+	@Override
 	public Restaurante buscar(Long id) {
 		return restauranteRepository.findById(id).orElseThrow(() -> new RestauranteNaoEncontradoException(id));
 	}
@@ -68,6 +70,7 @@ public class RestauranteService {
 		return restauranteRepository.buscarPrimeiro();
 	}
 
+	@Override
 	@Transactional
 	public Restaurante salvar(Restaurante restaurante) {
 		try {
@@ -83,6 +86,12 @@ public class RestauranteService {
 		}
 	}
 	
+	@Override
+	public void remover(Long id) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	@Transactional
 	public void ativar(Long id) {
 		Restaurante restauranteAtual = buscar(id);
@@ -94,5 +103,7 @@ public class RestauranteService {
 		Restaurante restauranteAtual = buscar(id);
 		restauranteAtual.inativar();
 	}
+
+	
 	
 }

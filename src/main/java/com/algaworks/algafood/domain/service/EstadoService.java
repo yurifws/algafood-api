@@ -13,26 +13,30 @@ import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
 
 @Service
-public class EstadoService {
+public class EstadoService implements IService<Estado>{
 
 	private static final String MSG_ESTADO_EM_USO = "Estado de código %d náo pode ser removida, pois está em uso.";
 	
 	@Autowired
 	private EstadoRepository estadoRepository;
 
+	@Override
 	public List<Estado> listar() {
 		return estadoRepository.findAll();
 	}
 
+	@Override
 	public Estado buscar(Long id) {
 		return estadoRepository.findById(id).orElseThrow(() -> new EstadoNaoEncontradoException(id));
 	}
 
+	@Override
 	@Transactional
 	public Estado salvar(Estado estado) {
 		return estadoRepository.save(estado);
 	}
 
+	@Override
 	@Transactional
 	public void remover(Long id) {
 		try {

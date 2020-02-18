@@ -16,7 +16,7 @@ import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
 
 @Service
-public class CidadeService {
+public class CidadeService implements IService<Cidade>{
 
 	private static final String MSG_CIDADE_EM_USO = "Cidade de código %d náo pode ser removida, pois está em uso.";
 	
@@ -26,14 +26,17 @@ public class CidadeService {
 	@Autowired
 	private EstadoService estadoService;
 
+	@Override
 	public List<Cidade> listar() {
 		return cidadeRepository.findAll();
 	}
 
+	@Override
 	public Cidade buscar(Long id) {
 		return cidadeRepository.findById(id).orElseThrow(() -> new CidadeNaoEncontradaException(id));
 	}
 
+	@Override
 	@Transactional
 	public Cidade salvar(Cidade cidade) {
 		try {
@@ -46,6 +49,7 @@ public class CidadeService {
 		}
 	}
 
+	@Override
 	@Transactional
 	public void remover(Long id) {
 		try {

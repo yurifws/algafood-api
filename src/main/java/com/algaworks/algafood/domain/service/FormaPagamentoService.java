@@ -13,26 +13,30 @@ import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.repository.FormaPagamentoRepository;
 
 @Service
-public class FormaPagamentoService {
+public class FormaPagamentoService implements IService<FormaPagamento> {
 	
 	private static final String MSG_FORMA_PAGAMENTO_EM_USO = "Forma de pagamento de código %d náo pode ser removida, pois está em uso.";
 	
 	@Autowired
 	private FormaPagamentoRepository formaPagamentoRepository;
 	
+	@Override
 	public List<FormaPagamento> listar(){
 		return formaPagamentoRepository.findAll();
 	}
 	
+	@Override
 	public FormaPagamento buscar(Long id){
 		return formaPagamentoRepository.findById(id).orElseThrow(() -> new FormaPagamentoNaoEncontradaException(id));
 	}
 	
+	@Override
 	@Transactional
 	public FormaPagamento salvar(FormaPagamento formaPagamento) {
 		return formaPagamentoRepository.save(formaPagamento);
 	}
 
+	@Override
 	@Transactional
 	public void remover(Long id) {
 		try {
