@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
+import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
@@ -23,6 +24,9 @@ public class RestauranteService {
 
 	@Autowired
 	private CozinhaService cozinhaService;
+	
+	@Autowired
+	private CidadeService cidadeService;
 
 	public List<Restaurante> listar() {
 		return restauranteRepository.findAll();
@@ -69,7 +73,10 @@ public class RestauranteService {
 		try {
 			Long cozinhaId = restaurante.getCozinha().getId();
 			Cozinha cozinha = cozinhaService.buscar(cozinhaId);
+			Long cidadeId = restaurante.getEndereco().getCidade().getId();
+			Cidade cidade = cidadeService.buscar(cidadeId);
 			restaurante.setCozinha(cozinha);
+			restaurante.getEndereco().setCidade(cidade);
 			return restauranteRepository.save(restaurante);
 		} catch (EntidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage(), e);
