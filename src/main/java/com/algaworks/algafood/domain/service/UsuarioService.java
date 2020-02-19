@@ -1,12 +1,14 @@
 package com.algaworks.algafood.domain.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.algaworks.algafood.domain.exception.EmailUsuarioJaCadastradoException;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.SenhaUsuarioNaoCoincideException;
@@ -35,7 +37,17 @@ public class UsuarioService implements IService<Usuario> {
 	@Override
 	@Transactional
 	public Usuario salvar(Usuario usuario) {
-		return usuarioRepository.save(usuario);
+		try {
+			usuarioRepository.detach(usuario);
+			Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
+			
+			if(usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario)) {
+				throw new EmailUsuarioJaCadastradoException(usuario.getEmail());
+			}
+			return usuarioRepository.save(usuario);
+		}catch (EmailUsuarioJaCadastradoException e) {
+			throw new NegocioException(e.getMessage(), e);
+		}
 	}
 
 	@Transactional
