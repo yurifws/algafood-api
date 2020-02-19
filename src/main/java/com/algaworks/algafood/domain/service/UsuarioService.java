@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
+import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.exception.SenhaUsuarioNaoCoincideException;
 import com.algaworks.algafood.domain.exception.UsuarioNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.UsuarioRepository;
@@ -37,12 +39,17 @@ public class UsuarioService implements IService<Usuario> {
 	}
 
 	@Transactional
-	public void atualizarSenha(String senha, Usuario usuario) {
-		if (usuario.validaSenhaAtual(senha)) {
+	public void atualizarSenha(String senhaAtual, String novaSenha, Usuario usuario) {
+		try {
+			if (usuario.senhaAtualNaoCoincideSenhaUsuario(senhaAtual)) {
+				throw new SenhaUsuarioNaoCoincideException();
+			}
+			usuario.setSenha(novaSenha);
 			usuarioRepository.save(usuario);
-		}else {
-			// LANCAR EXECECAO DE SENHA ATUAL INCORRETA
+		}catch (SenhaUsuarioNaoCoincideException e) {
+			throw new NegocioException(e.getMessage(), e);
 		}
+		
 	}
 
 	@Override

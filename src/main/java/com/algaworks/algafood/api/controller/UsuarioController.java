@@ -55,18 +55,17 @@ public class UsuarioController {
 	}
 	
 	@PutMapping("/{id}")
-	public void atualizar(@PathVariable Long id, @RequestBody @Valid UsuarioSemSenhaInput usuarioSemSenhaInput) {
+	public UsuarioModel atualizar(@PathVariable Long id, @RequestBody @Valid UsuarioSemSenhaInput usuarioSemSenhaInput) {
 		Usuario usuarioAtual =  usuarioService.buscar(id);
-		
 		usuarioInputDisassembler.copyToDomainObject(usuarioSemSenhaInput, usuarioAtual);
-		usuarioService.salvar(usuarioAtual);
+		return usuarioModelAssembler.toModel(usuarioService.salvar(usuarioAtual));
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping("/{id}/senha")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void atualizar(@PathVariable Long id, @RequestBody @Valid UsuarioSenhaInput usuarioSenhaInput) {
+	public void atualizarSenha(@PathVariable Long id, @RequestBody @Valid UsuarioSenhaInput usuarioSenhaInput) {
 		Usuario usuarioAtual =  usuarioService.buscar(id);
-		usuarioService.atualizarSenha(usuarioSenhaInput.getSenhaAtual(), usuarioAtual);
+		usuarioService.atualizarSenha(usuarioSenhaInput.getSenhaAtual(), usuarioSenhaInput.getNovaSenha(), usuarioAtual);
 	}
 
 //	@DeleteMapping("/{id}")

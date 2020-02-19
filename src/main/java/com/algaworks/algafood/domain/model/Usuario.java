@@ -53,7 +53,11 @@ public class Usuario {
 		inverseJoinColumns = @JoinColumn(name = "grupo_id"))
 	private List<Grupo> grupos = new ArrayList<>(0); 
 	
-	public boolean validaSenhaAtual(String senhaAtual) {
+	public boolean senhaAtualNaoCoincideSenhaUsuario(String senhaAtual) {
+		return !senha.equals(senhaAtual);
+	}
+	
+	public boolean senhaAtualCoincideSenhaUsuario(String senhaAtual) {
 		return senha.equals(senhaAtual);
 	}
 	

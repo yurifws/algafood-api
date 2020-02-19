@@ -14,6 +14,7 @@ public class UsuarioSemSenhaInput {
 	private String nome;
 	
 	@Email
+	@NotBlank
 	private String email;
 	
 }
