@@ -19,7 +19,7 @@ import com.algaworks.algafood.domain.repository.UsuarioRepository;
 @Service
 public class UsuarioService implements IService<Usuario> {
 
-	private static final String MSG_USUARIO_EM_USO = "Usuário de código %d náo pode ser removida, pois está em uso.";
+	private static final String MSG_USUARIO_EM_USO = "Usuário de código %d náo pode ser removido, pois está em uso.";
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;

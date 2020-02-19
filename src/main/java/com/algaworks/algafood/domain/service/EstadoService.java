@@ -15,7 +15,7 @@ import com.algaworks.algafood.domain.repository.EstadoRepository;
 @Service
 public class EstadoService implements IService<Estado>{
 
-	private static final String MSG_ESTADO_EM_USO = "Estado de código %d náo pode ser removida, pois está em uso.";
+	private static final String MSG_ESTADO_EM_USO = "Estado de código %d náo pode ser removido, pois está em uso.";
 	
 	@Autowired
 	private EstadoRepository estadoRepository;

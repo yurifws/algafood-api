@@ -15,7 +15,7 @@ import com.algaworks.algafood.domain.repository.ProdutoRepository;
 @Service
 public class ProdutoService implements IService<Produto> {
 	
-	private static final String MSG_PRODUTO_EM_USO = "Produto de código %d náo pode ser removida, pois está em uso.";
+	private static final String MSG_PRODUTO_EM_USO = "Produto de código %d náo pode ser removido, pois está em uso.";
 	
 	@Autowired
 	private ProdutoRepository produtoRepository;
