@@ -13,6 +13,7 @@ import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
+import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 
@@ -27,6 +28,9 @@ public class RestauranteService implements IService<Restaurante>{
 	
 	@Autowired
 	private CidadeService cidadeService;
+	
+	@Autowired
+	private FormaPagamentoService formaPagamentoService;
 
 	@Override
 	public List<Restaurante> listar() {
@@ -102,6 +106,20 @@ public class RestauranteService implements IService<Restaurante>{
 	public void inativar(Long id) {
 		Restaurante restauranteAtual = buscar(id);
 		restauranteAtual.inativar();
+	}
+	
+	@Transactional
+	public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+		Restaurante restaurante = buscar(restauranteId);
+		FormaPagamento formaPagamento = formaPagamentoService.buscar(formaPagamentoId);
+		restaurante.desassociarFormaPagamento(formaPagamento);
+	}
+	
+	@Transactional
+	public void associarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+		Restaurante restaurante = buscar(restauranteId);
+		FormaPagamento formaPagamento = formaPagamentoService.buscar(formaPagamentoId);
+		restaurante.adicionarFormaPagamento(formaPagamento);
 	}
 
 	
