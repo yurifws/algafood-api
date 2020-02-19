@@ -70,8 +70,12 @@ public class RestauranteService implements IService<Restaurante>{
 		return restauranteRepository.findComFreteGratis(nome);
 	}
 
-	public Optional<Restaurante> buscarPrimeiro() {
-		return restauranteRepository.buscarPrimeiro();
+	public Restaurante buscarPrimeiro() {
+		Optional<Restaurante> restaurante = restauranteRepository.buscarPrimeiro();
+		if(!restaurante.isPresent()) {
+			throw new RestauranteNaoEncontradoException("Não existem restaurantes.");
+		}
+		return restaurante.get();
 	}
 
 	@Override

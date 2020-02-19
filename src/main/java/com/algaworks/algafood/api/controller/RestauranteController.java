@@ -51,28 +51,31 @@ public class RestauranteController {
 	}
 	
 	@GetMapping("/por-taxa-frete")
-	public List<Restaurante> consultarPorTaxaFrete(@RequestParam BigDecimal taxaInicial,
+	public List<RestauranteModel> consultarPorTaxaFrete(@RequestParam BigDecimal taxaInicial,
 			@RequestParam BigDecimal taxaFinal) {
-		return restauranteService.buscarPorTaxaFrete(taxaInicial, taxaFinal);
+		return restauranteModelAssembler.toCollectionModel(
+				restauranteService.buscarPorTaxaFrete(taxaInicial, taxaFinal));
 	}
 
 	@GetMapping("/por-nome-e-cozinha-id")
-	public List<Restaurante> consultarPorTaxaFrete(@RequestParam String nome, @RequestParam Long cozinhaId) {
-		return restauranteService.buscarPorNomeECozinhaId(nome, cozinhaId);
+	public List<RestauranteModel> consultarPorTaxaFrete(@RequestParam String nome, @RequestParam Long cozinhaId) {
+		return restauranteModelAssembler.toCollectionModel(
+				restauranteService.buscarPorNomeECozinhaId(nome, cozinhaId));
 	}
 
 	@GetMapping("/primeiro-por-nome")
-	public ResponseEntity<Restaurante> buscarPrimeiroPorNome(@RequestParam String nome) {
+	public ResponseEntity<RestauranteModel> buscarPrimeiroPorNome(@RequestParam String nome) {
 		Optional<Restaurante> restaurante = restauranteService.buscarPrimeiroPorNome(nome);
 		if (restaurante.isPresent()) {
-			return ResponseEntity.ok(restaurante.get());
+			return ResponseEntity.ok(restauranteModelAssembler.toModel(restaurante.get()));
 		}
 		return ResponseEntity.notFound().build();
 	}
 
 	@GetMapping("/top2-por-nome")
-	public List<Restaurante> buscarTop2PorNome(@RequestParam String nome) {
-		return restauranteService.buscarTop2PorNome(nome);
+	public List<RestauranteModel> buscarTop2PorNome(@RequestParam String nome) {
+		return restauranteModelAssembler.toCollectionModel(
+					restauranteService.buscarTop2PorNome(nome));
 	}
 
 	@GetMapping("/count-por-cozinha-id")
@@ -81,18 +84,20 @@ public class RestauranteController {
 	}
 
 	@GetMapping("/por-nome-e-frete")
-	public List<Restaurante> buscarPorNomeEFrete(String nome, BigDecimal taxaInicial, BigDecimal taxaFinal) {
-		return restauranteService.buscarPorNomeEFrete(nome, taxaInicial, taxaFinal);
+	public List<RestauranteModel> buscarPorNomeEFrete(String nome, BigDecimal taxaInicial, BigDecimal taxaFinal) {
+		return restauranteModelAssembler.toCollectionModel(
+				restauranteService.buscarPorNomeEFrete(nome, taxaInicial, taxaFinal));
 	}
 
 	@GetMapping("/com-frete-gratis")
-	public List<Restaurante> buscarComFreteGratis(String nome) {
-		return restauranteService.buscarComFreteGratis(nome);
+	public List<RestauranteModel> buscarComFreteGratis(String nome) {
+		return restauranteModelAssembler.toCollectionModel(
+				restauranteService.buscarComFreteGratis(nome));
 	}
 
 	@GetMapping("/primeiro")
-	public Optional<Restaurante> buscarPrimeiro() {
-		return restauranteService.buscarPrimeiro();
+	public RestauranteModel buscarPrimeiro() {
+		return restauranteModelAssembler.toModel(restauranteService.buscarPrimeiro());
 	}
 
 	@PostMapping
