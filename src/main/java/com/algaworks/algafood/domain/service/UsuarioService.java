@@ -45,7 +45,6 @@ public class UsuarioService implements IService<Usuario> {
 				throw new SenhaUsuarioNaoCoincideException();
 			}
 			usuario.setSenha(novaSenha);
-			usuarioRepository.save(usuario);
 		}catch (SenhaUsuarioNaoCoincideException e) {
 			throw new NegocioException(e.getMessage(), e);
 		}
