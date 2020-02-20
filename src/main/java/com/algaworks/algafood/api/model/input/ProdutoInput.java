@@ -19,10 +19,11 @@ public class ProdutoInput {
 	@NotBlank
 	private String descricao;
 	
+	@NotNull
 	@PositiveOrZero
 	private BigDecimal preco;
 	
 	@NotNull
-	private boolean ativo;
+	private Boolean ativo;
 	
 }

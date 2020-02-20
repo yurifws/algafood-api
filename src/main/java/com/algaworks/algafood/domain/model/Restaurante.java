@@ -2,9 +2,7 @@ package com.algaworks.algafood.domain.model;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -71,7 +69,7 @@ public class Restaurante {
 	private Set<FormaPagamento> formasPagamento = new HashSet<>(0);
 	
 	@OneToMany(mappedBy = "restaurante")
-	private List<Produto> produtos = new ArrayList<>(0);
+	private Set<Produto> produtos = new HashSet<>(0);
 
 	public void ativar() {
 		this.ativo = true;
@@ -85,8 +83,11 @@ public class Restaurante {
 		formasPagamento.remove(formaPagamento);
 	} 
 	
-	public void adicionarFormaPagamento(FormaPagamento formaPagamento) {
+	public void associarFormaPagamento(FormaPagamento formaPagamento) {
 		formasPagamento.add(formaPagamento);
 	} 
 	
+	public void salvarProduto(Produto produto) {
+		produtos.add(produto);
+	} 
 }

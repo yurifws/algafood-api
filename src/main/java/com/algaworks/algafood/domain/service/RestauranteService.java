@@ -123,9 +123,7 @@ public class RestauranteService implements IService<Restaurante>{
 	public void associarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
 		Restaurante restaurante = buscar(restauranteId);
 		FormaPagamento formaPagamento = formaPagamentoService.buscar(formaPagamentoId);
-		restaurante.adicionarFormaPagamento(formaPagamento);
+		restaurante.associarFormaPagamento(formaPagamento);
 	}
-
-	
 	
 }

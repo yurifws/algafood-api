@@ -4,13 +4,13 @@ public class ProdutoNaoEncontradaException extends EntidadeNaoEncontradaExceptio
 
 	private static final long serialVersionUID = 4321357790018529363L;
 	
-	private static final String MSG_PRODUTO_NAO_ENCONTRADO = "Não existe um cadastro de produto com código %d";
+	private static final String MSG_PRODUTO_NAO_ENCONTRADO = "Não existe um cadastro de produto com código %d para o restaurante de código %d";
 
 	public ProdutoNaoEncontradaException(String mensagem) {
 		super(mensagem);
 	}
 
-	public ProdutoNaoEncontradaException(Long estadoId) {
-		this(String.format(MSG_PRODUTO_NAO_ENCONTRADO, estadoId));
+	public ProdutoNaoEncontradaException(Long restauranteId, Long produtoId) {
+		this(String.format(MSG_PRODUTO_NAO_ENCONTRADO, produtoId, restauranteId));
 	}
 }

@@ -10,7 +10,7 @@ public class UsuarioNaoEncontradoException extends EntidadeNaoEncontradaExceptio
 		super(mensagem);
 	}
 
-	public UsuarioNaoEncontradoException(Long estadoId) {
-		this(String.format(MSG_USUARIO_NAO_ENCONTRADO, estadoId));
+	public UsuarioNaoEncontradoException(Long usuarioId) {
+		this(String.format(MSG_USUARIO_NAO_ENCONTRADO, usuarioId));
 	}
 }
