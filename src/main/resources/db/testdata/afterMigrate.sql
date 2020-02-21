@@ -51,8 +51,8 @@ insert into tb_forma_pagamento (id, descricao) values (1, 'Cartão de Credito');
 insert into tb_forma_pagamento (id, descricao) values (2, 'Cartão de Debito');
 insert into tb_forma_pagamento (id, descricao) values (3, 'Cheque');
 
-insert into tb_permissao (id, nome, descricao) values (1, 'Consultar', 'Permite consulta');
-insert into tb_permissao (id, nome, descricao) values (2, 'Incluir/Alterar', 'Permite inclusão e alteração');
+insert into tb_permissao (id, nome, descricao) values (1, 'CONSULTAR_COZINHAS', 'Permite consultar cozinhas');
+insert into tb_permissao (id, nome, descricao) values (2, 'EDITAR_COZINHAS', 'Permite editar cozinhas');
 
 insert into tb_restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3);
 
@@ -66,7 +66,9 @@ insert into tb_produto (nome, descricao, preco, ativo, restaurante_id) values ('
 insert into tb_produto (nome, descricao, preco, ativo, restaurante_id) values ('Sanduíche X-Tudo', 'Sandubão com muito queijo, hamburger bovino, bacon, ovo, salada e maionese', 19, 1, 4);
 insert into tb_produto (nome, descricao, preco, ativo, restaurante_id) values ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 4);
 
-insert into tb_grupo (nome) values ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');
+nsert into tb_grupo (id, nome) values (1, 'Gerente'), (2, 'Vendedor'), (3, 'Secretária'), (4, 'Cadastrador');
+
+insert into tb_grupo_permissao (grupo_id, permissao_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1); 
 
 insert into tb_usuario (id, nome, email, senha, data_cadastro) values
 (1, 'João da Silva', 'joao.ger@algafood.com', '123', utc_timestamp),
