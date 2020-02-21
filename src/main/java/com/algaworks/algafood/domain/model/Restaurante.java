@@ -61,6 +61,8 @@ public class Restaurante {
 	private Endereco endereco;
 	
 	private Boolean ativo = true;
+
+	private Boolean aberto = false;
 	
 	@ManyToMany
 	@JoinTable(name = "tb_restaurante_forma_pagamento",
@@ -77,6 +79,14 @@ public class Restaurante {
 	
 	public void inativar() {
 		this.ativo = false;
+	}
+	
+	public void abrir() {
+		this.aberto = true;
+	}
+	
+	public void fechar() {
+		this.aberto = false;
 	}
 	
 	public void desassociarFormaPagamento(FormaPagamento formaPagamento) {

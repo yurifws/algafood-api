@@ -113,6 +113,18 @@ public class RestauranteService implements IService<Restaurante>{
 	}
 	
 	@Transactional
+	public void abrir(Long id) {
+		Restaurante restauranteAtual = buscar(id);
+		restauranteAtual.abrir();
+	}
+	
+	@Transactional
+	public void fechar(Long id) {
+		Restaurante restauranteAtual = buscar(id);
+		restauranteAtual.fechar();
+	}
+	
+	@Transactional
 	public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
 		Restaurante restaurante = buscar(restauranteId);
 		FormaPagamento formaPagamento = formaPagamentoService.buscar(formaPagamentoId);
