@@ -13,6 +13,7 @@ import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.SenhaUsuarioNaoCoincideException;
 import com.algaworks.algafood.domain.exception.UsuarioNaoEncontradoException;
+import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.UsuarioRepository;
 
@@ -23,6 +24,9 @@ public class UsuarioService implements IService<Usuario> {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private GrupoService grupoService;
 
 	@Override
 	public List<Usuario> listar() {
@@ -73,6 +77,20 @@ public class UsuarioService implements IService<Usuario> {
 			throw new EntidadeEmUsoException(String.format(MSG_USUARIO_EM_USO, id));
 		}
 
+	}
+
+	@Transactional
+	public void associarGrupo(Long usuarioId, Long grupoId) {
+		Usuario usuario = buscar(usuarioId);
+		Grupo grupo = grupoService.buscar(grupoId);
+		usuario.associarGrupo(grupo);
+	}
+
+	@Transactional
+	public void desassociarGrupo(Long usuarioId, Long grupoId) {
+		Usuario usuario = buscar(usuarioId);
+		Grupo grupo = grupoService.buscar(grupoId);
+		usuario.desassociarGrupo(grupo);
 	}
 
 }
