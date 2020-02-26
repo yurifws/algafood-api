@@ -15,6 +15,7 @@ import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 
 @Service
@@ -31,6 +32,9 @@ public class RestauranteService implements IService<Restaurante>{
 	
 	@Autowired
 	private FormaPagamentoService formaPagamentoService;
+	
+	@Autowired
+	private UsuarioService usuarioService;
 
 	@Override
 	public List<Restaurante> listar() {
@@ -136,6 +140,20 @@ public class RestauranteService implements IService<Restaurante>{
 		Restaurante restaurante = buscar(restauranteId);
 		FormaPagamento formaPagamento = formaPagamentoService.buscar(formaPagamentoId);
 		restaurante.associarFormaPagamento(formaPagamento);
+	}
+	
+	@Transactional
+	public void desassociarResponsavel(Long restauranteId, Long responsavelId) {
+		Restaurante restaurante = buscar(restauranteId);
+		Usuario responsavel = usuarioService.buscar(responsavelId);
+		restaurante.desassociarResponsavel(responsavel);
+	}
+	
+	@Transactional
+	public void associarResponsavel(Long restauranteId, Long responsavelId) {
+		Restaurante restaurante = buscar(restauranteId);
+		Usuario responsavel = usuarioService.buscar(responsavelId);
+		restaurante.associarResponsavel(responsavel);
 	}
 	
 }

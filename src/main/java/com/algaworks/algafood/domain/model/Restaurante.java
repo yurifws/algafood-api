@@ -72,6 +72,12 @@ public class Restaurante {
 	
 	@OneToMany(mappedBy = "restaurante")
 	private Set<Produto> produtos = new HashSet<>(0);
+	
+	@ManyToMany
+	@JoinTable(name = "tb_restaurante_usuario_responsavel",
+			joinColumns = @JoinColumn(name = "restaurante_id"), 
+			inverseJoinColumns = @JoinColumn(name = "usuario_id"))
+	private Set<Usuario> responsaveis = new HashSet<>(0);
 
 	public void ativar() {
 		this.ativo = true;
@@ -99,5 +105,13 @@ public class Restaurante {
 	
 	public void salvarProduto(Produto produto) {
 		produtos.add(produto);
+	} 
+	
+	public void desassociarResponsavel(Usuario responsavel) {
+		responsaveis.remove(responsavel);
+	} 
+	
+	public void associarResponsavel(Usuario responsavel) {
+		responsaveis.add(responsavel);
 	} 
 }

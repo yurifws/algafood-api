@@ -15,6 +15,7 @@ delete from tb_restaurante;
 delete from tb_restaurante_forma_pagamento;
 delete from tb_usuario;
 delete from tb_usuario_grupo;
+delete from tb_restaurante_usuario_responsavel;
 
 set foreign_key_checks = 1;
 
@@ -42,10 +43,10 @@ insert into tb_cidade (id, nome, estado_id) values (2, 'São Paulo', 2);
 insert into tb_cidade (id, nome, estado_id) values (3, 'Jaboatao dos Guararapes', 1);
 insert into tb_cidade (id, nome, estado_id) values (4, 'Goiana', 1);
 
-insert into tb_restaurante (nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values ('China in Box', 100.0, 1, UTC_TIMESTAMP, UTC_TIMESTAMP, true, true, 1, "50751-567", "Rua Itapemirim", "2209", "Chovena");
-insert into tb_restaurante (nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values ('Coowok', 50.0, 1, UTC_TIMESTAMP, UTC_TIMESTAMP, true, true, 2, "50751-787", "Rua Tuktuk", "489", "Bongi");
-insert into tb_restaurante (nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values ('Matuto', 150.0, 2, UTC_TIMESTAMP, UTC_TIMESTAMP, true, true, 3, "50781-567", "Rua Santos do Monte", "7897", "San Martin");
-insert into tb_restaurante (nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values ('Haiako', 0.0, 1, UTC_TIMESTAMP, UTC_TIMESTAMP, true, true, 4, "50796-567", "Rua Lepo Lepo", "6695", "Jardim Sao Paulo");
+insert into tb_restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values (1, 'China in Box', 100.0, 1, UTC_TIMESTAMP, UTC_TIMESTAMP, true, true, 1, "50751-567", "Rua Itapemirim", "2209", "Chovena");
+insert into tb_restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values (2, 'Coowok', 50.0, 1, UTC_TIMESTAMP, UTC_TIMESTAMP, true, true, 2, "50751-787", "Rua Tuktuk", "489", "Bongi");
+insert into tb_restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values (3, 'Matuto', 150.0, 2, UTC_TIMESTAMP, UTC_TIMESTAMP, true, true, 3, "50781-567", "Rua Santos do Monte", "7897", "San Martin");
+insert into tb_restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values (4, 'Haiako', 0.0, 1, UTC_TIMESTAMP, UTC_TIMESTAMP, true, true, 4, "50796-567", "Rua Lepo Lepo", "6695", "Jardim Sao Paulo");
 
 insert into tb_forma_pagamento (id, descricao) values (1, 'Cartão de Credito');
 insert into tb_forma_pagamento (id, descricao) values (2, 'Cartão de Debito');
@@ -74,6 +75,9 @@ insert into tb_usuario (id, nome, email, senha, data_cadastro) values
 (1, 'João da Silva', 'joao.ger@algafood.com', '123', utc_timestamp),
 (2, 'Maria Joaquina', 'maria.vnd@algafood.com', '123', utc_timestamp),
 (3, 'José Souza', 'jose.aux@algafood.com', '123', utc_timestamp),
-(4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '123', utc_timestamp);
+(4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '123', utc_timestamp),
+(5, 'Manoel Lima', 'manoel.loja@gmail.com', '123', utc_timestamp);
 
 insert into tb_usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
+
+insert into tb_restaurante_usuario_responsavel (restaurante_id, usuario_id) values (1, 5), (3, 5);
