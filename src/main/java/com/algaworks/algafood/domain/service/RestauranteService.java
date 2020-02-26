@@ -19,29 +19,27 @@ import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 
 @Service
-public class RestauranteService implements IService<Restaurante>{
+public class RestauranteService {
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
 
 	@Autowired
 	private CozinhaService cozinhaService;
-	
+
 	@Autowired
 	private CidadeService cidadeService;
-	
+
 	@Autowired
 	private FormaPagamentoService formaPagamentoService;
-	
+
 	@Autowired
 	private UsuarioService usuarioService;
 
-	@Override
 	public List<Restaurante> listar() {
 		return restauranteRepository.findAll();
 	}
 
-	@Override
 	public Restaurante buscar(Long id) {
 		return restauranteRepository.findById(id).orElseThrow(() -> new RestauranteNaoEncontradoException(id));
 	}
@@ -76,13 +74,12 @@ public class RestauranteService implements IService<Restaurante>{
 
 	public Restaurante buscarPrimeiro() {
 		Optional<Restaurante> restaurante = restauranteRepository.buscarPrimeiro();
-		if(!restaurante.isPresent()) {
+		if (!restaurante.isPresent()) {
 			throw new RestauranteNaoEncontradoException("Não existem restaurantes.");
 		}
 		return restaurante.get();
 	}
 
-	@Override
 	@Transactional
 	public Restaurante salvar(Restaurante restaurante) {
 		try {
@@ -97,63 +94,75 @@ public class RestauranteService implements IService<Restaurante>{
 			throw new NegocioException(e.getMessage(), e);
 		}
 	}
-	
-	@Override
-	public void remover(Long id) {
-		// TODO Auto-generated method stub
-		
-	}
-	
+
 	@Transactional
 	public void ativar(Long id) {
 		Restaurante restauranteAtual = buscar(id);
 		restauranteAtual.ativar();
 	}
-	
+
 	@Transactional
 	public void inativar(Long id) {
 		Restaurante restauranteAtual = buscar(id);
 		restauranteAtual.inativar();
 	}
-	
+
 	@Transactional
 	public void abrir(Long id) {
 		Restaurante restauranteAtual = buscar(id);
 		restauranteAtual.abrir();
 	}
-	
+
 	@Transactional
 	public void fechar(Long id) {
 		Restaurante restauranteAtual = buscar(id);
 		restauranteAtual.fechar();
 	}
-	
+
 	@Transactional
 	public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
 		Restaurante restaurante = buscar(restauranteId);
 		FormaPagamento formaPagamento = formaPagamentoService.buscar(formaPagamentoId);
 		restaurante.desassociarFormaPagamento(formaPagamento);
 	}
-	
+
 	@Transactional
 	public void associarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
 		Restaurante restaurante = buscar(restauranteId);
 		FormaPagamento formaPagamento = formaPagamentoService.buscar(formaPagamentoId);
 		restaurante.associarFormaPagamento(formaPagamento);
 	}
-	
+
 	@Transactional
 	public void desassociarResponsavel(Long restauranteId, Long responsavelId) {
 		Restaurante restaurante = buscar(restauranteId);
 		Usuario responsavel = usuarioService.buscar(responsavelId);
 		restaurante.desassociarResponsavel(responsavel);
 	}
-	
+
 	@Transactional
 	public void associarResponsavel(Long restauranteId, Long responsavelId) {
 		Restaurante restaurante = buscar(restauranteId);
 		Usuario responsavel = usuarioService.buscar(responsavelId);
 		restaurante.associarResponsavel(responsavel);
 	}
-	
+
+	@Transactional
+	public void ativar(List<Long> restauranteIds) {
+		try {
+			restauranteIds.forEach(this::ativar);
+		} catch (EntidadeNaoEncontradaException e) {
+			throw new NegocioException(e.getMessage(), e);
+		}
+	}
+
+	@Transactional
+	public void inativar(List<Long> restauranteIds) {
+		try {
+			restauranteIds.forEach(this::inativar);
+		} catch (EntidadeNaoEncontradaException e) {
+			throw new NegocioException(e.getMessage(), e);
+		}
+	}
+
 }
