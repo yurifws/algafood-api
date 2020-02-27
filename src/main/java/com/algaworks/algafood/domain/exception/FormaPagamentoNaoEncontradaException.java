@@ -10,7 +10,7 @@ public class FormaPagamentoNaoEncontradaException extends EntidadeNaoEncontradaE
 		super(mensagem);
 	}
 
-	public FormaPagamentoNaoEncontradaException(Long estadoId) {
-		this(String.format(MSG_FORMA_PAGAMENTO_NAO_ENCONTRADO, estadoId));
+	public FormaPagamentoNaoEncontradaException(Long formaEntregaId) {
+		this(String.format(MSG_FORMA_PAGAMENTO_NAO_ENCONTRADO, formaEntregaId));
 	}
 }

@@ -10,7 +10,7 @@ public class CozinhaNaoEncontradaException extends EntidadeNaoEncontradaExceptio
 		super(mensagem);
 	}
 
-	public CozinhaNaoEncontradaException(Long estadoId) {
-		this(String.format(MSG_COZINHA_NAO_ENCONTRADO, estadoId));
+	public CozinhaNaoEncontradaException(Long cozinhaId) {
+		this(String.format(MSG_COZINHA_NAO_ENCONTRADO, cozinhaId));
 	}
 }

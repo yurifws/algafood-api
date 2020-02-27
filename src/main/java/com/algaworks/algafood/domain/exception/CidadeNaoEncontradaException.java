@@ -10,7 +10,7 @@ public class CidadeNaoEncontradaException extends EntidadeNaoEncontradaException
 		super(mensagem);
 	}
 
-	public CidadeNaoEncontradaException(Long estadoId) {
-		this(String.format(MSG_CIDADE_NAO_ENCONTRADO, estadoId));
+	public CidadeNaoEncontradaException(Long cidadeId) {
+		this(String.format(MSG_CIDADE_NAO_ENCONTRADO, cidadeId));
 	}
 }

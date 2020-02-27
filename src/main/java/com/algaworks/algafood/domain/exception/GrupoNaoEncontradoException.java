@@ -10,7 +10,7 @@ public class GrupoNaoEncontradoException extends EntidadeNaoEncontradaException 
 		super(mensagem);
 	}
 
-	public GrupoNaoEncontradoException(Long estadoId) {
-		this(String.format(MSG_GRUPO_NAO_ENCONTRADO, estadoId));
+	public GrupoNaoEncontradoException(Long grupoId) {
+		this(String.format(MSG_GRUPO_NAO_ENCONTRADO, grupoId));
 	}
 }

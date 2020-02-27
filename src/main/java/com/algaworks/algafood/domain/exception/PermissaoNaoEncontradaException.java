@@ -10,7 +10,7 @@ public class PermissaoNaoEncontradaException extends EntidadeNaoEncontradaExcept
 		super(mensagem);
 	}
 
-	public PermissaoNaoEncontradaException(Long estadoId) {
-		this(String.format(MSG_PERMISSAO_NAO_ENCONTRADO, estadoId));
+	public PermissaoNaoEncontradaException(Long permissaoId) {
+		this(String.format(MSG_PERMISSAO_NAO_ENCONTRADO, permissaoId));
 	}
 }
