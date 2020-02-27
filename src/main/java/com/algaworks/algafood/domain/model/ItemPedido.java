@@ -4,15 +4,12 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,15 +35,20 @@ public class ItemPedido {
 	private BigDecimal precoTotal;
 	
 	private String observacao;
-	
-	@JsonIgnoreProperties("hibernateLazyInitializer")
-	@ManyToOne(fetch = FetchType.LAZY)
+
+	@ManyToOne
 	@JoinColumn(name = "produto_id", nullable = false)
 	private Produto produto;
-	
-	@JsonIgnoreProperties("hibernateLazyInitializer")
-	@ManyToOne(fetch = FetchType.LAZY)
+
+	@ManyToOne
 	@JoinColumn(name = "pedido_id", nullable = false)
 	private Pedido pedido;
+	
+	public void calcularPrecoTotal() {
+		if (precoUnitario == null) {
+			precoUnitario = BigDecimal.ZERO;
+		}
+		precoTotal = precoUnitario.multiply(new BigDecimal(this.quantidade));
+	}
 	
 }

@@ -110,4 +110,8 @@ public class Restaurante {
 	public void associarResponsavel(Usuario responsavel) {
 		responsaveis.add(responsavel);
 	} 
+	
+	public boolean naoAceitaFormaPagamento(FormaPagamento formaPagamento) {
+		return !formasPagamento.contains(formaPagamento);
+	}
 }
