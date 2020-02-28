@@ -78,6 +78,7 @@ public class PedidoService implements IService<Pedido>{
 	private void validarItensPedido(Pedido pedido) {
 		pedido.getItens().forEach(item -> {
 			Produto produto = produtoService.buscar(pedido.getRestaurante().getId(), item.getProduto().getId());
+			//item.setId(null);
 			item.setPedido(pedido);
 			item.setProduto(produto);
 			item.setPrecoUnitario(produto.getPreco());

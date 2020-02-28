@@ -6,8 +6,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.algaworks.algafood.api.model.ItemPedidoModel;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,6 +28,6 @@ public class PedidoInput {
 	@Valid
 	@Size(min = 1)
 	@NotNull
-	private List<ItemPedidoModel> itens;
+	private List<ItemPedidoInput> itens;
 
 }
