@@ -62,4 +62,5 @@ public class PedidoController {
 		return pedidoModelAssembler.toModel(pedidoService.salvar(pedido));
 		
 	}
+	
 }

@@ -1,5 +1,6 @@
 package com.algaworks.algafood.domain.service;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,12 @@ import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.model.StatusPedido;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
 
 @Service
-public class PedidoService implements IService<Pedido>{
+public class PedidoService {
 	
 	private static final String MSG_FORMA_DE_PAGAMENTO_NAO_ACEITA = "Forma de pagamento '%s' não é aceita por esse restaurante.";
 
@@ -39,17 +41,14 @@ public class PedidoService implements IService<Pedido>{
 	@Autowired
 	private ProdutoService produtoService;
 
-	@Override
 	public List<Pedido> listar() {
 		return pedidoRepository.findAll();
 	}
 
-	@Override
 	public Pedido buscar(Long id) {
 		return pedidoRepository.findById(id).orElseThrow(() -> new PedidoNaoEncontradaException(id));
 	}
 
-	@Override
 	@Transactional
 	public Pedido salvar(Pedido pedido) {
 		validarPedido(pedido);
@@ -84,11 +83,42 @@ public class PedidoService implements IService<Pedido>{
 			item.setPrecoUnitario(produto.getPreco());
 		});
 	}
-
-	@Override
-	public void remover(Long id) {
-		// TODO Auto-generated method stub
+	
+	@Transactional
+	public void confirmar(Long id) {
+		Pedido pedido = buscar(id);
 		
+		if(!pedido.getStatus().equals(StatusPedido.CRIADO)) {
+			throw new NegocioException(String.format("Status do pedido %d não pode ser alterado de %s para %s", 
+					id, pedido.getStatus().getDescricao(), StatusPedido.CONFIRMADO.getDescricao()));
+		}
+		pedido.setStatus(StatusPedido.CONFIRMADO);
+		pedido.setDataConfirmacao(OffsetDateTime.now());
 	}
+	
+	@Transactional
+	public void entregar(Long id) {
+		Pedido pedido = buscar(id);
+		
+		if(!pedido.getStatus().equals(StatusPedido.CONFIRMADO)) {
+			throw new NegocioException(String.format("Status do pedido %d não pode ser alterado de %s para %s", 
+					id, pedido.getStatus().getDescricao(), StatusPedido.ENTREGUE.getDescricao()));
+		}
+		pedido.setStatus(StatusPedido.ENTREGUE);
+		pedido.setDataConfirmacao(OffsetDateTime.now());
+	}
+	
+	@Transactional
+	public void cancelar(Long id) {
+		Pedido pedido = buscar(id);
+		
+		if(!pedido.getStatus().equals(StatusPedido.CRIADO)) {
+			throw new NegocioException(String.format("Status do pedido %d não pode ser alterado de %s para %s", 
+					id, pedido.getStatus().getDescricao(), StatusPedido.CANCELADO.getDescricao()));
+		}
+		pedido.setStatus(StatusPedido.CANCELADO);
+		pedido.setDataConfirmacao(OffsetDateTime.now());
+	}
+
 
 }
