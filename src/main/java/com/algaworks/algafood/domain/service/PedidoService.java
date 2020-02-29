@@ -43,8 +43,8 @@ public class PedidoService {
 		return pedidoRepository.findAll();
 	}
 
-	public Pedido buscar(Long id) {
-		return pedidoRepository.findById(id).orElseThrow(() -> new PedidoNaoEncontradaException(id));
+	public Pedido buscar(String codigo) {
+		return pedidoRepository.findByCodigo(codigo).orElseThrow(() -> new PedidoNaoEncontradaException(codigo));
 	}
 
 	@Transactional
