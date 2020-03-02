@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,16 +16,15 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 
 @Service
-public class CozinhaService implements IService<Cozinha>{
+public class CozinhaService{
 
 	private static final String MSG_COZINHA_EM_USO = "Cozinha de código %d náo pode ser removida, pois está em uso.";
 	
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
 
-	@Override
-	public List<Cozinha> listar() {
-		return cozinhaRepository.findAll();
+	public Page<Cozinha> listar(Pageable pageable) {
+		return cozinhaRepository.findAll(pageable);
 	}
 
 	public List<Cozinha> consultarTodasPorNome(String nome) {
@@ -38,18 +39,15 @@ public class CozinhaService implements IService<Cozinha>{
 		return cozinhaRepository.existsByNome(nome);
 	}
 
-	@Override
 	public Cozinha buscar(Long id) {
 		return cozinhaRepository.findById(id).orElseThrow(() -> new CozinhaNaoEncontradaException(id));
 	}
 
-	@Override
 	@Transactional
 	public Cozinha salvar(Cozinha cozinha) {
 		return cozinhaRepository.save(cozinha);
 	}
-	
-	@Override
+
 	@Transactional
 	public void remover(Long id) {
 		try {
