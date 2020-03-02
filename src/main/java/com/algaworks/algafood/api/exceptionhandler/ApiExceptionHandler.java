@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -41,18 +42,24 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	@Autowired
 	private MessageSource messageSource;
 	
+	@Override
+	protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status,
+			WebRequest request) {
+		return handleValidationInternal(ex, ex.getBindingResult(), status, request);
+	}
+	
 	@ExceptionHandler(ValidacaoException.class)
 	public ResponseEntity<?> handleValidacaoException(ValidacaoException ex, WebRequest request) {
-		return handleValidacaoInternal(ex, ex.getBindingResult(), HttpStatus.BAD_REQUEST, request);
+		return handleValidationInternal(ex, ex.getBindingResult(), HttpStatus.BAD_REQUEST, request);
 	}
 	
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-		return handleValidacaoInternal(ex, ex.getBindingResult(), status, request);
+		return handleValidationInternal(ex, ex.getBindingResult(), status, request);
 	}
 
-	private ResponseEntity<Object> handleValidacaoInternal(Exception ex, BindingResult bindingResult, HttpStatus status,
+	private ResponseEntity<Object> handleValidationInternal(Exception ex, BindingResult bindingResult, HttpStatus status,
 			WebRequest request) {
 		ProblemType problemType = ProblemType.DADOS_INVALIDOS;
 		String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
