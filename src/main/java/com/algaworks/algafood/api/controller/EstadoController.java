@@ -54,10 +54,10 @@ public class EstadoController {
 	}
 
 	@PutMapping("/{id}")
-	public Estado atualizar(@PathVariable Long id, @RequestBody @Valid EstadoInput estadoInput) {
+	public EstadoModel atualizar(@PathVariable Long id, @RequestBody @Valid EstadoInput estadoInput) {
 		Estado estadoAtual =  estadoService.buscar(id);
 		estadoInputDisassembler.copyToDomainObject(estadoInput, estadoAtual);
-		return estadoService.salvar(estadoAtual);
+		return estadoModelAssembler.toModel(estadoService.salvar(estadoAtual));
 	}
 
 	@DeleteMapping("/{id}")

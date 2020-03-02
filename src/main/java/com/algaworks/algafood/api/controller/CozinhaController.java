@@ -56,15 +56,15 @@ public class CozinhaController {
 	}
 
 	@GetMapping("/por-nome")
-	public List<Cozinha> consultarPorNome(@RequestParam("nome") String nome) {
-		return cozinhaService.consultarTodasPorNome(nome);
+	public List<CozinhaModel> consultarPorNome(@RequestParam("nome") String nome) {
+		return cozinhaModelAssembler.toCollectionModel(cozinhaService.consultarTodasPorNome(nome));
 	}
 
 	@GetMapping("/unica-por-nome")
-	public ResponseEntity<Cozinha> consultarTodasPorNome(@RequestParam("nome") String nome) {
+	public ResponseEntity<CozinhaModel> consultarTodasPorNome(@RequestParam("nome") String nome) {
 		Optional<Cozinha> cozinha = cozinhaService.consultarPorNome(nome);
 		if (cozinha.isPresent()) {
-			return ResponseEntity.ok(cozinha.get());
+			return ResponseEntity.ok(cozinhaModelAssembler.toModel(cozinha.get()));
 		}
 		return ResponseEntity.notFound().build();
 	}
