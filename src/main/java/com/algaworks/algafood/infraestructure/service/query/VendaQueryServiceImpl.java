@@ -1,4 +1,4 @@
-package com.algaworks.algafood.infraestructure.service;
+package com.algaworks.algafood.infraestructure.service.query;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +18,7 @@ import com.algaworks.algafood.domain.model.dto.VendaDiaria;
 import com.algaworks.algafood.domain.service.VendaQueryService;
 
 @Repository
-public class VendaDiariaServiceImpl implements VendaQueryService {
+public class VendaQueryServiceImpl implements VendaQueryService {
 
 	@PersistenceContext
 	private EntityManager entityManager;
