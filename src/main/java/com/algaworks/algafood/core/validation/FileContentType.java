@@ -16,15 +16,15 @@ import javax.validation.Payload;
 
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 @Retention(RUNTIME)
-@Constraint(validatedBy = { MultiploValidator.class})
-public @interface Multiplo {
+@Constraint(validatedBy = { FileContentTypeValidator.class})
+public @interface FileContentType {
 
-	String message() default "Multiplo inválido";
+	String message() default "extensão de arquivo inválido";
 
 	Class<?>[] groups() default { };
 
 	Class<? extends Payload>[] payload() default { };
 	
-	int numero();
+	String[] allowed();
 
 }
