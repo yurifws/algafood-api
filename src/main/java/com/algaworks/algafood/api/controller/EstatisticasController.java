@@ -42,6 +42,7 @@ public class EstatisticasController {
 		
 		return ResponseEntity.ok()
 				.contentType(MediaType.APPLICATION_PDF)
+				.headers(headers)
 				.body(bytesPdf);
 	}
 
