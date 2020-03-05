@@ -1,10 +1,8 @@
 package com.algaworks.algafood.api.controller;
 
-import java.nio.file.Path;
-import java.util.UUID;
-
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -12,26 +10,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.algaworks.algafood.api.assembler.FotoProdutoModelAssembler;
+import com.algaworks.algafood.api.model.FotoProdutoModel;
 import com.algaworks.algafood.api.model.input.FotoProdutoInput;
+import com.algaworks.algafood.domain.model.FotoProduto;
+import com.algaworks.algafood.domain.model.Produto;
+import com.algaworks.algafood.domain.service.FotoProdutoService;
+import com.algaworks.algafood.domain.service.ProdutoService;
 
 @RestController
 @RequestMapping("/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
 public class RestauranteProdutoFotoController {
 	
+	@Autowired
+	private ProdutoService produtoService;
+	
+	@Autowired
+	private FotoProdutoService fotoProdutoService;
+	
+	@Autowired
+	private FotoProdutoModelAssembler fotoProdutoModelAssembler;
+	
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public void atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, @Valid FotoProdutoInput fotoProdutoInput) {
+	public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, @Valid FotoProdutoInput fotoProdutoInput) {
 		MultipartFile arquivo = fotoProdutoInput.getArquivo();
-		var nomeArquivo = UUID.randomUUID() + "_" + arquivo.getOriginalFilename();
-		var arquivoFoto = Path.of("/Users/yuri.fernando.silva/Downloads/catalogo", nomeArquivo);
 		
-		System.out.println(arquivoFoto);
-		System.out.println(fotoProdutoInput.getDescricao());
-		System.out.println(arquivo.getContentType());
-		try {
-			arquivo.transferTo(arquivoFoto);
-		} catch (Exception ex) {
-			throw new RuntimeException(ex);
-		}
+		Produto produto = produtoService.buscar(restauranteId, produtoId);
+		
+		FotoProduto fotoProduto = new FotoProduto();
+		fotoProduto.setProduto(produto);
+		fotoProduto.setDescricao(fotoProdutoInput.getDescricao());
+		fotoProduto.setContentType(arquivo.getContentType());
+		fotoProduto.setNomeArquivo(arquivo.getOriginalFilename());
+		fotoProduto.setTamanho(arquivo.getSize());
+		return fotoProdutoModelAssembler.toModel(fotoProdutoService.salvar(fotoProduto));
 	}
 
 }
