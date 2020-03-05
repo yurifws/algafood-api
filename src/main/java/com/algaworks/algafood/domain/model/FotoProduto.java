@@ -37,5 +37,12 @@ public class FotoProduto {
 	
 	@Column(nullable = false)
 	private Long tamanho;
+	
+	public Long getRestauranteId() {
+		if(produto != null) {
+			return produto.getRestaurante().getId();
+		}
+		return null;
+	}
 
 }
