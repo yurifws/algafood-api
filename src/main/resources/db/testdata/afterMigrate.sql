@@ -18,6 +18,7 @@ delete from tb_usuario_grupo;
 delete from tb_restaurante_usuario_responsavel;
 delete from tb_pedido;
 delete from tb_item_pedido;
+delete from tb_foto_produto;
 
 set foreign_key_checks = 1;
 
