@@ -11,7 +11,7 @@ import com.algaworks.algafood.domain.service.FotoStorageService;
 
 @Service
 public class LocalFotoStorageService implements FotoStorageService {
-	
+
 	@Value("${algafood.storage.local.diretorio-fotos}")
 	private Path diretorioFotos;
 
@@ -25,7 +25,17 @@ public class LocalFotoStorageService implements FotoStorageService {
 		}
 
 	}
-	
+
+	@Override
+	public void remover(String nomeArquivo) {
+		try {
+			Path path = getArquivoPath(nomeArquivo);
+			Files.deleteIfExists(path);
+		} catch (Exception ex) {
+			new StorageException("Não foi possível remover arquivo.", ex);
+		}
+	}
+
 	private Path getArquivoPath(String nomeArquivo) {
 		return diretorioFotos.resolve(Path.of(nomeArquivo));
 	}

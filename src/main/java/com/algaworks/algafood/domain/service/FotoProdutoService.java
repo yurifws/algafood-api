@@ -27,18 +27,20 @@ public class FotoProdutoService {
 		Long produtoId = fotoProduto.getProduto().getId();
 		Optional<FotoProduto> fotoProdutoExistente = produtoRepository.findFotoProdutoById(restauranteId, produtoId);
 		fotoProduto.setNomeArquivo(fotoStorageService.gerarNomeArquivo(fotoProduto.getNomeArquivo()));
+		String nomeArquivoExistente = null;
 
 		if (fotoProdutoExistente.isPresent()) {
+			nomeArquivoExistente = fotoProdutoExistente.get().getNomeArquivo();
 			produtoRepository.delete(fotoProdutoExistente.get());
 		}
 		fotoProduto = produtoRepository.save(fotoProduto);
 		produtoRepository.flush();
 		
-		NovaFoto foto = NovaFoto.builder()
+		NovaFoto novaFoto = NovaFoto.builder()
 				.nomeArquivo(fotoProduto.getNomeArquivo())
 				.inputStream(inputStream)
 				.build();
-		fotoStorageService.armazenar(foto);
+		fotoStorageService.substituir(nomeArquivoExistente, novaFoto);
 		return fotoProduto;
 	}
 
