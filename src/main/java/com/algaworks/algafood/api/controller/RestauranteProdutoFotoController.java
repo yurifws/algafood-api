@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
+import com.algaworks.algafood.api.assembler.FotoInputDisassembler;
 import com.algaworks.algafood.api.assembler.FotoProdutoModelAssembler;
 import com.algaworks.algafood.api.model.FotoProdutoModel;
 import com.algaworks.algafood.api.model.input.FotoProdutoInput;
@@ -29,20 +29,17 @@ public class RestauranteProdutoFotoController {
 	private FotoProdutoService fotoProdutoService;
 	
 	@Autowired
+	private FotoInputDisassembler fotoInputDisassembler;
+	
+	@Autowired
 	private FotoProdutoModelAssembler fotoProdutoModelAssembler;
+	
 	
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, @Valid FotoProdutoInput fotoProdutoInput) {
-		MultipartFile arquivo = fotoProdutoInput.getArquivo();
-		
 		Produto produto = produtoService.buscar(restauranteId, produtoId);
-		
-		FotoProduto fotoProduto = new FotoProduto();
+		FotoProduto fotoProduto = fotoInputDisassembler.toDomainObject(fotoProdutoInput);
 		fotoProduto.setProduto(produto);
-		fotoProduto.setDescricao(fotoProdutoInput.getDescricao());
-		fotoProduto.setContentType(arquivo.getContentType());
-		fotoProduto.setNomeArquivo(arquivo.getOriginalFilename());
-		fotoProduto.setTamanho(arquivo.getSize());
 		return fotoProdutoModelAssembler.toModel(fotoProdutoService.salvar(fotoProduto));
 	}
 

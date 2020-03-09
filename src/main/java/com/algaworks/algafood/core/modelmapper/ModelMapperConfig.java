@@ -5,8 +5,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.algaworks.algafood.api.model.EnderecoModel;
+import com.algaworks.algafood.api.model.input.FotoProdutoInput;
 import com.algaworks.algafood.api.model.input.ItemPedidoInput;
 import com.algaworks.algafood.domain.model.Endereco;
+import com.algaworks.algafood.domain.model.FotoProduto;
 import com.algaworks.algafood.domain.model.ItemPedido;
 
 @Configuration
@@ -25,6 +27,20 @@ public class ModelMapperConfig {
 		
 		modelMapper.createTypeMap(ItemPedidoInput.class, ItemPedido.class)
 		.addMappings(mapper -> mapper.skip(ItemPedido::setId));
+		
+		var fotoInputToFotoTypeMap = modelMapper.createTypeMap(FotoProdutoInput.class, FotoProduto.class);
+		fotoInputToFotoTypeMap.<String>addMapping(
+				source -> source.getArquivo().getContentType(), 
+				(destination, value) -> destination.setContentType(value));
+		fotoInputToFotoTypeMap.<String>addMapping(
+				source -> source.getArquivo().getOriginalFilename(), 
+				(destination, value) -> destination.setNomeArquivo(value));
+		fotoInputToFotoTypeMap.<Long>addMapping(
+				source -> source.getArquivo().getSize(), 
+				(destination, value) -> destination.setTamanho(value));
+		fotoInputToFotoTypeMap.<Long>addMapping(
+				source -> source.getArquivo().getSize(), 
+				(destination, value) -> destination.setTamanho(value));
 		
 		return modelMapper;
 	}
