@@ -73,7 +73,6 @@ public class RestauranteProdutoFotoController {
 			return ResponseEntity.notFound()
 					.build();
 		}
-		
 	}
 
 }
