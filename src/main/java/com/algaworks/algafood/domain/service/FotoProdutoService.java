@@ -49,5 +49,11 @@ public class FotoProdutoService {
 		fotoStorageService.substituir(nomeArquivoExistente, novaFoto);
 		return fotoProduto;
 	}
+	
+	@Transactional
+	public void remover(FotoProduto fotoProduto) {
+		produtoRepository.delete(fotoProduto);
+		fotoStorageService.remover(fotoProduto.getNomeArquivo());
+	}
 
 }
