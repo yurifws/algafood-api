@@ -1,14 +1,15 @@
 package com.algaworks.algafood.core.storage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.algaworks.algafood.core.storage.StorageProperties.S3;
 import com.algaworks.algafood.core.storage.StorageProperties.TipoStorage;
 import com.algaworks.algafood.domain.service.FotoStorageService;
-import com.algaworks.algafood.infraestructure.service.storage.LocalFotoStorageService;
-import com.algaworks.algafood.infraestructure.service.storage.S3FotoStorageService;
+import com.algaworks.algafood.infraestructure.service.storage.LocalFotoStorageServiceImpl;
+import com.algaworks.algafood.infraestructure.service.storage.S3FotoStorageServiceImpl;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
@@ -21,7 +22,7 @@ public class StorageConfig {
 	private StorageProperties storageProperties;
 	
 	@Bean
-	//@ConditionalOnProperty(name = "algafood.storage.tipo", havingValue = "s3")
+	@ConditionalOnProperty(name = "algafood.storage.tipo", havingValue = "s3")
 	public AmazonS3 amazonS3() {
 		S3 s3 = storageProperties.getS3();
 		var credentials = new BasicAWSCredentials(s3.getIdChaveAcesso(), 
@@ -36,9 +37,9 @@ public class StorageConfig {
 	@Bean
 	public FotoStorageService fotoStorageService() {
 		if(TipoStorage.LOCAL.equals(storageProperties.getTipo())) {
-			return new LocalFotoStorageService();
+			return new LocalFotoStorageServiceImpl();
 		}else{
-			return new S3FotoStorageService();
+			return new S3FotoStorageServiceImpl();
 		}
 	}
 
