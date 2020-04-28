@@ -45,7 +45,7 @@ public class SmtpEnvioEmailServiceImpl implements EnvioEmailService {
 
 	}
 	
-	private String processarTemplate(Mensagem mensagem) {
+	protected String processarTemplate(Mensagem mensagem) {
 		try {
 			Template template = configurationFreeMarker.getTemplate(mensagem.getCorpo());
 			return FreeMarkerTemplateUtils.processTemplateIntoString(template, mensagem.getVariaveis());
