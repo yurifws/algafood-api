@@ -19,21 +19,25 @@ public class SmtpEnvioEmailServiceImpl implements EnvioEmailService {
 
 	@Autowired
 	private JavaMailSender mailSender;
-	
+
 	@Autowired
 	private EmailProperties emailProperties;
-	
+
 	@Autowired
 	private Configuration configurationFreeMarker;
 
 	@Override
 	public void enviar(Mensagem mensagem) {
+		enviarMensagemPorDestinatario(mensagem, emailProperties.getRemetente());
+	}
+
+	protected void enviarMensagemPorDestinatario(Mensagem mensagem, String destinatario) {
 		try {
 			String corpo = processarTemplate(mensagem);
 			MimeMessage mimeMessage = mailSender.createMimeMessage();
 
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
-			helper.setFrom(emailProperties.getRemetente());
+			helper.setFrom(destinatario);
 			helper.setTo(mensagem.getDestinatarios().toArray(new String[0]));
 			helper.setSubject(mensagem.getAssunto());
 			helper.setText(corpo, true);
@@ -42,9 +46,8 @@ public class SmtpEnvioEmailServiceImpl implements EnvioEmailService {
 		} catch (Exception ex) {
 			new EmailException("Não foi possível enviar e-mail.", ex);
 		}
-
 	}
-	
+
 	protected String processarTemplate(Mensagem mensagem) {
 		try {
 			Template template = configurationFreeMarker.getTemplate(mensagem.getCorpo());
