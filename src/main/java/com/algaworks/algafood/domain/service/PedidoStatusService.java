@@ -23,7 +23,8 @@ public class PedidoStatusService {
 		
 		Mensagem mensagem = Mensagem.builder()
 				.assunto(String.format("%s - Pedido confirmado", pedido.getRestaurante().getNome()))
-				.corpo(String.format("O pedido de código <strong>%s</strong> foi confirmado", pedido.getCodigo()))
+				.corpo("pedido-confirmado.html")
+				.variavel("pedido", pedido)
 				.destinatario(pedido.getCliente().getEmail())
 				.build();
 		envioEmailService.enviar(mensagem);
