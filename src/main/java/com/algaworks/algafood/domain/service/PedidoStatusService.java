@@ -22,14 +22,7 @@ public class PedidoStatusService {
 		Pedido pedido = pedidoService.buscar(codigo);
 		pedido.confirmar();
 		pedidoRepository.save(pedido);
-		
-//		Mensagem mensagem = Mensagem.builder()
-//				.assunto(String.format("%s - Pedido confirmado", pedido.getRestaurante().getNome()))
-//				.corpo("pedido-confirmado.html")
-//				.variavel("pedido", pedido)
-//				.destinatario(pedido.getCliente().getEmail())
-//				.build();
-//		envioEmailService.enviar(mensagem);
+
 	}
 	
 	@Transactional
