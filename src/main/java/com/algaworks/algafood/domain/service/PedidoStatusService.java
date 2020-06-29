@@ -35,6 +35,7 @@ public class PedidoStatusService {
 	public void cancelar(String codigo) {
 		Pedido pedido = pedidoService.buscar(codigo);
 		pedido.cancelar();
+		pedidoRepository.save(pedido);
 	}
 
 
