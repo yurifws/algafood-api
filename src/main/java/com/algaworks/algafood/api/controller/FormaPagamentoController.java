@@ -48,7 +48,11 @@ public class FormaPagamentoController {
 		List<FormaPagamentoModel> formaPagamentoModels =  formaPagamentoModelAssembler.toCollectionModel(formaPagamentoService.listar());
 		
 		return ResponseEntity.ok()
-				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+				//.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+				//.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePrivate())
+				//.cacheControl(CacheControl.noCache())
+				//.cacheControl(CacheControl.noStore())
+				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
 				.body(formaPagamentoModels);
 	}
 
