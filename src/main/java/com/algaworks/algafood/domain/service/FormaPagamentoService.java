@@ -1,5 +1,6 @@
 package com.algaworks.algafood.domain.service;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,10 @@ public class FormaPagamentoService implements IService<FormaPagamento> {
 			throw new EntidadeEmUsoException(String.format(MSG_FORMA_PAGAMENTO_EM_USO, id));
 		}
 
+	}
+	
+	public OffsetDateTime getDataUltimaAtualizacao() {
+		return formaPagamentoRepository.getDataUltimaAtualizacao();
 	}
 	
 
