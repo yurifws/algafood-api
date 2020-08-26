@@ -53,9 +53,9 @@ insert into tb_restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, dat
 insert into tb_restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values (3, 'Matuto', 150.0, 2, UTC_TIMESTAMP, UTC_TIMESTAMP, true, true, 3, "50781-567", "Rua Santos do Monte", "7897", "San Martin");
 insert into tb_restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values (4, 'Haiako', 0.0, 1, UTC_TIMESTAMP, UTC_TIMESTAMP, true, true, 4, "50796-567", "Rua Lepo Lepo", "6695", "Jardim Sao Paulo");
 
-insert into tb_forma_pagamento (id, descricao) values (1, 'Cartão de Credito');
-insert into tb_forma_pagamento (id, descricao) values (2, 'Cartão de Debito');
-insert into tb_forma_pagamento (id, descricao) values (3, 'Cheque');
+insert into tb_forma_pagamento (id, descricao, data_atualizacao) values (1, 'Cartão de Credito', utc_timestamp);
+insert into tb_forma_pagamento (id, descricao, data_atualizacao) values (2, 'Cartão de Debito', utc_timestamp);
+insert into tb_forma_pagamento (id, descricao, data_atualizacao) values (3, 'Cheque', utc_timestamp);
 
 insert into tb_permissao (id, nome, descricao) values (1, 'CONSULTAR_COZINHAS', 'Permite consultar cozinhas');
 insert into tb_permissao (id, nome, descricao) values (2, 'EDITAR_COZINHAS', 'Permite editar cozinhas');
