@@ -25,6 +25,7 @@ import com.algaworks.algafood.domain.service.CidadeService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @Api(tags = "Cidades")
 @RestController
@@ -48,21 +49,27 @@ public class CidadeController {
 
 	@ApiOperation(value = "Buscar uma cidade por Id")
 	@GetMapping("/{id}")
-	public CidadeModel buscar(@PathVariable Long id) {
+	public CidadeModel buscar(@ApiParam(value = "Id de uma cidade", example = "1") 
+	@PathVariable Long id) {
 		return cidadeModelAssembler.toModel(cidadeService.buscar(id));
 	}
 
 	@ApiOperation(value = "Cadastra uma cidade por Id")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
+	public CidadeModel adicionar(@ApiParam(name = "corpo", value = "Representação de uma nova cidade")
+			@RequestBody @Valid CidadeInput cidadeInput) {
 		Cidade cidade = cidadeInputDisassembler.toDomainObject(cidadeInput);
 		return cidadeModelAssembler.toModel(cidadeService.salvar(cidade));
 	}
 
 	@ApiOperation(value = "Atualiza uma cidade por Id")
 	@PutMapping("/{id}")
-	public CidadeModel atualizar(@PathVariable Long id, @RequestBody @Valid CidadeInput cidadeInput) {
+	public CidadeModel atualizar(
+			@ApiParam(value = "Id de uma cidade", example = "1") 
+			@PathVariable Long id, 
+			@ApiParam(name = "corpo", value = "Representação de uma cidade com os novos dados")
+			@RequestBody @Valid CidadeInput cidadeInput) {
 		Cidade cidadeAtual = cidadeService.buscar(id);
 		cidadeInputDisassembler.copyToDomainObject(cidadeInput, cidadeAtual);
 		return cidadeModelAssembler.toModel(cidadeService.salvar(cidadeAtual));
@@ -72,7 +79,9 @@ public class CidadeController {
 	@ApiOperation(value = "Exclui uma cidade por Id")
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long id) {
+	public void remover(
+			@ApiParam(value = "Id de uma cidade", example = "1") 
+			@PathVariable Long id) {
 		cidadeService.remover(id);
 	}
 
