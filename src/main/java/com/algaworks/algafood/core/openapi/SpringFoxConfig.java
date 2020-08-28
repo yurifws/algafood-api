@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -18,7 +19,10 @@ public class SpringFoxConfig implements WebMvcConfigurer{
 	public Docket apiDocket() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-				.apis(RequestHandlerSelectors.any())
+				//.apis(Predicates.not(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api")))
+				.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
+				.paths(PathSelectors.any())
+				//.paths(PathSelectors.ant("/restaurants/*"))
 				.build();
 	}
 	
