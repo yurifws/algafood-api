@@ -14,7 +14,6 @@ import io.swagger.annotations.ApiResponses;
 
 @Api(tags = "Cidades")
 public interface CidadeControllerOpenApi {
-	
 
 	@ApiOperation(value = "Listagem as cidades")
 	public List<CidadeModel> listar();
@@ -48,6 +47,5 @@ public interface CidadeControllerOpenApi {
 	})
 	public void remover(
 			@ApiParam(value = "Id de uma cidade", example = "1") Long id);
-
 
 }
