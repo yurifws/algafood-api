@@ -19,6 +19,7 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseMessageBuilder;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.ResponseMessage;
@@ -31,6 +32,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SpringFoxConfig implements WebMvcConfigurer{
+
 
 	@Bean
 	public Docket apiDocket() {
@@ -94,6 +96,7 @@ public class SpringFoxConfig implements WebMvcConfigurer{
 		return new ResponseMessageBuilder()
 				.code(HttpStatus.INTERNAL_SERVER_ERROR.value())
 				.message("Erro interno no servidor")
+				.responseModel(new ModelRef(Problem.MODEL_REF))
 				.build();
 	}
 
@@ -101,6 +104,7 @@ public class SpringFoxConfig implements WebMvcConfigurer{
 		return new ResponseMessageBuilder()
 				.code(HttpStatus.BAD_REQUEST.value())
 				.message("Requisição inválida (erro do cliente)")
+				.responseModel(new ModelRef(Problem.MODEL_REF))
 				.build();
 	}
 

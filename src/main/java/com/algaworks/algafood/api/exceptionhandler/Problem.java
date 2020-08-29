@@ -12,11 +12,13 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 
-@ApiModel(value = "Problema")
+@ApiModel(value = Problem.MODEL_REF)
 @JsonInclude(value = Include.NON_NULL)
 @Getter
 @Builder
 public class Problem {
+	
+	public static final String MODEL_REF = "Problema";
 	
 	@ApiModelProperty(example = "400", position = 1)
 	private Integer status;
