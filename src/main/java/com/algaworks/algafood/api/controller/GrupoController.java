@@ -56,10 +56,10 @@ public class GrupoController implements GrupoControllerOpenApi{
 	}
 
 	@PutMapping("/{id}")
-	public Grupo atualizar(@PathVariable Long id, @RequestBody @Valid GrupoInput grupoInput) {
+	public GrupoModel atualizar(@PathVariable Long id, @RequestBody @Valid GrupoInput grupoInput) {
 		Grupo grupoAtual =  grupoService.buscar(id);
 		grupoInputDisassembler.copyToDomainObject(grupoInput, grupoAtual);
-		return grupoService.salvar(grupoAtual);
+		return grupoModelAssembler.toModel(grupoService.salvar(grupoAtual));
 	}
 
 	@DeleteMapping("/{id}")

@@ -5,7 +5,6 @@ import java.util.List;
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.GrupoModel;
 import com.algaworks.algafood.api.model.input.GrupoInput;
-import com.algaworks.algafood.domain.model.Grupo;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,7 +39,7 @@ public interface GrupoControllerOpenApi {
 			@ApiResponse(code = 200, message = "Grupo atualizado"),
 			@ApiResponse(code = 404, message = "Grupo não encontrado", response = Problem.class),
 	})
-	public Grupo atualizar(
+	public GrupoModel atualizar(
 			@ApiParam(value = "Id de um grupo", example = "1", required = true) Long id, 
 			@ApiParam(name = "corpo", value = "Representação de um grupo com os novos dados", required = true) 
 			GrupoInput grupoInput);
