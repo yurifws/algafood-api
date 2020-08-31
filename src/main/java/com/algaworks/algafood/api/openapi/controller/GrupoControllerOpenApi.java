@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiResponses;
 @Api(tags = "Grupos")
 public interface GrupoControllerOpenApi {
 	
-	@ApiOperation(value = "Listagem as grupos")
+	@ApiOperation(value = "Listagem de grupos")
 	public List<GrupoModel> listar();
 	
 	@ApiOperation(value = "Buscar um grupo por Id")
