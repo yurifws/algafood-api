@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,18 +26,14 @@ import com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
 import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.api.model.RestauranteView;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
-import com.algaworks.algafood.api.openapi.model.RestauranteBasicoModelOpenApi;
+import com.algaworks.algafood.api.openapi.controller.RestauranteControllerOpenApi;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.RestauranteService;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-
 @RestController
-@RequestMapping("/restaurantes")
-public class RestauranteController {
+@RequestMapping(path = "/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteController implements RestauranteControllerOpenApi{
 
 	@Autowired
 	private RestauranteService restauranteService;
@@ -47,18 +44,12 @@ public class RestauranteController {
 	@Autowired
 	private RestauranteInputDisassembler restauranteInputDisassembler;
 
-	@ApiOperation(value = "Listagem de restaurantes", response = RestauranteBasicoModelOpenApi.class)
-	@ApiImplicitParams({
-		@ApiImplicitParam(value = "Nomes da projeção de pedidos", allowableValues = "apenas-nome",
-				name = "projecao", paramType = "query", type = "string")
-	})
 	@JsonView(RestauranteView.Resumo.class)
 	@GetMapping
 	public List<RestauranteModel> listar() {
 		return restauranteModelAssembler.toCollectionModel(restauranteService.listar());
 	}
 	
-	@ApiOperation(value = "Listagem de restaurantes", hidden = true)
 	@JsonView(RestauranteView.ApenasNome.class)
 	@GetMapping(params = "projecao=apenas-nome")
 	public List<RestauranteModel> listarApenasNome() {
@@ -94,7 +85,7 @@ public class RestauranteController {
 	}
 
 	@GetMapping("/por-nome-e-cozinha-id")
-	public List<RestauranteModel> consultarPorTaxaFrete(@RequestParam String nome, @RequestParam Long cozinhaId) {
+	public List<RestauranteModel> consultarPorNomeECozinha(@RequestParam String nome, @RequestParam Long cozinhaId) {
 		return restauranteModelAssembler.toCollectionModel(
 				restauranteService.buscarPorNomeECozinhaId(nome, cozinhaId));
 	}
