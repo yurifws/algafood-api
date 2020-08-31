@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.ResourceUriHelper;
 import com.algaworks.algafood.api.assembler.CidadeInputDisassembler;
 import com.algaworks.algafood.api.assembler.CidadeModelAssembler;
 import com.algaworks.algafood.api.model.CidadeModel;
@@ -31,10 +32,10 @@ public class CidadeController implements CidadeControllerOpenApi{
 
 	@Autowired
 	private CidadeService cidadeService;
-	
+
 	@Autowired
 	private CidadeModelAssembler cidadeModelAssembler;
-	
+
 	@Autowired
 	private CidadeInputDisassembler cidadeInputDisassembler;
 
@@ -52,7 +53,9 @@ public class CidadeController implements CidadeControllerOpenApi{
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
 		Cidade cidade = cidadeInputDisassembler.toDomainObject(cidadeInput);
-		return cidadeModelAssembler.toModel(cidadeService.salvar(cidade));
+		CidadeModel cidadeModel =  cidadeModelAssembler.toModel(cidadeService.salvar(cidade));
+		ResourceUriHelper.addUriResponseHeader(cidadeModel.getId());
+		return cidadeModel;
 	}
 
 	@PutMapping("/{id}")
@@ -60,7 +63,6 @@ public class CidadeController implements CidadeControllerOpenApi{
 		Cidade cidadeAtual = cidadeService.buscar(id);
 		cidadeInputDisassembler.copyToDomainObject(cidadeInput, cidadeAtual);
 		return cidadeModelAssembler.toModel(cidadeService.salvar(cidadeAtual));
-		
 	}
 
 	@DeleteMapping("/{id}")
