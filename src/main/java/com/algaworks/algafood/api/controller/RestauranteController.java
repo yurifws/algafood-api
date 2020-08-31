@@ -25,9 +25,14 @@ import com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
 import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.api.model.RestauranteView;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
+import com.algaworks.algafood.api.openapi.model.RestauranteBasicoModelOpenApi;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.RestauranteService;
 import com.fasterxml.jackson.annotation.JsonView;
+
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -42,12 +47,18 @@ public class RestauranteController {
 	@Autowired
 	private RestauranteInputDisassembler restauranteInputDisassembler;
 
+	@ApiOperation(value = "Listagem de restaurantes", response = RestauranteBasicoModelOpenApi.class)
+	@ApiImplicitParams({
+		@ApiImplicitParam(value = "Nomes da projeção de pedidos", allowableValues = "apenas-nome",
+				name = "projecao", paramType = "query", type = "string")
+	})
 	@JsonView(RestauranteView.Resumo.class)
 	@GetMapping
 	public List<RestauranteModel> listar() {
 		return restauranteModelAssembler.toCollectionModel(restauranteService.listar());
 	}
 	
+	@ApiOperation(value = "Listagem de restaurantes", hidden = true)
 	@JsonView(RestauranteView.ApenasNome.class)
 	@GetMapping(params = "projecao=apenas-nome")
 	public List<RestauranteModel> listarApenasNome() {
