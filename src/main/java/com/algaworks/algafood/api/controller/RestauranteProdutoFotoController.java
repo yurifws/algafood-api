@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.algaworks.algafood.api.assembler.FotoInputDisassembler;
 import com.algaworks.algafood.api.assembler.FotoProdutoModelAssembler;
@@ -55,7 +57,8 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
-			@Valid FotoProdutoInput fotoProdutoInput) throws IOException {
+			@Valid FotoProdutoInput fotoProdutoInput,
+			@RequestPart(required = true) MultipartFile arquivo) throws IOException {
 		Produto produto = produtoService.buscar(restauranteId, produtoId);
 		FotoProduto fotoProduto = fotoInputDisassembler.toDomainObject(fotoProdutoInput);
 		fotoProduto.setProduto(produto);
