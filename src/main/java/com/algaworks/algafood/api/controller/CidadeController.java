@@ -53,10 +53,8 @@ public class CidadeController implements CidadeControllerOpenApi{
 		
 		cidadeModel.add(linkTo(methodOn(CidadeController.class).buscar(cidadeModel.getId()))
 				.withSelfRel());
-		
 		cidadeModel.add(linkTo(methodOn(CidadeController.class).listar())
 				.withRel("cidades"));
-		
 		cidadeModel.getEstado().add(linkTo(methodOn(EstadoController.class).buscar(cidadeModel.getEstado().getId()))
 				.withSelfRel());
 		
