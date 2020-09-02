@@ -5,6 +5,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.TemplateVariable;
+import org.springframework.hateoas.TemplateVariables;
+import org.springframework.hateoas.UriTemplate;
+import org.springframework.hateoas.TemplateVariable.VariableType;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +36,15 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
 		PedidoModel pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
 		modelMapper.map(pedido, pedidoModel);
 		
-		pedidoModel.add(linkTo(PedidoController.class).withRel("pedidos"));
+//		pedidoModel.add(linkTo(PedidoController.class).withRel("pedidos"));
+		TemplateVariables pageVariables = new TemplateVariables(
+				new TemplateVariable("page", VariableType.REQUEST_PARAM),
+				new TemplateVariable("size", VariableType.REQUEST_PARAM),
+				new TemplateVariable("sort", VariableType.REQUEST_PARAM));
+
+		pedidoModel.add(new Link(UriTemplate.of(
+				linkTo(PedidoController.class).toUri().toString(), pageVariables), "pedidos"));
+		
 		pedidoModel.getEnderecoEntrega().getCidade().add(linkTo(
 				methodOn(CidadeController.class).buscar(pedidoModel.getEnderecoEntrega().getCidade().getId())).withSelfRel());
 		pedidoModel.getFormaPagamento().add(linkTo(
