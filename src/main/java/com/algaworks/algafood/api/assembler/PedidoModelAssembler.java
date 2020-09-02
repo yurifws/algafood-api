@@ -36,14 +36,19 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
 		PedidoModel pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
 		modelMapper.map(pedido, pedidoModel);
 		
-//		pedidoModel.add(linkTo(PedidoController.class).withRel("pedidos"));
 		TemplateVariables pageVariables = new TemplateVariables(
 				new TemplateVariable("page", VariableType.REQUEST_PARAM),
 				new TemplateVariable("size", VariableType.REQUEST_PARAM),
 				new TemplateVariable("sort", VariableType.REQUEST_PARAM));
 
+		TemplateVariables filtroVariables = new TemplateVariables(
+				new TemplateVariable("clienteId", VariableType.REQUEST_PARAM),
+				new TemplateVariable("restauranteId", VariableType.REQUEST_PARAM),
+				new TemplateVariable("dataCriacaoInicio", VariableType.REQUEST_PARAM),
+				new TemplateVariable("dataCriacaoFim", VariableType.REQUEST_PARAM));
+
 		pedidoModel.add(new Link(UriTemplate.of(
-				linkTo(PedidoController.class).toUri().toString(), pageVariables), "pedidos"));
+				linkTo(PedidoController.class).toUri().toString(), pageVariables.concat(filtroVariables)), "pedidos"));
 		
 		pedidoModel.getEnderecoEntrega().getCidade().add(linkTo(
 				methodOn(CidadeController.class).buscar(pedidoModel.getEnderecoEntrega().getCidade().getId())).withSelfRel());
