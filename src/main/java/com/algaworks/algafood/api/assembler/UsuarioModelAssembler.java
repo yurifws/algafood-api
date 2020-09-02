@@ -28,8 +28,7 @@ public class UsuarioModelAssembler extends RepresentationModelAssemblerSupport<U
 	public UsuarioModel toModel(Usuario usuario) {
 		UsuarioModel usuarioModel = createModelWithId(usuario.getId(), usuario);
 		modelMapper.map(usuario, usuarioModel);
-		usuarioModel.add(linkTo(methodOn(UsuarioController.class).listar())
-				.withRel("usuarios"));
+		usuarioModel.add(linkTo(UsuarioController.class).withRel("usuarios"));
 		usuarioModel.add(linkTo(methodOn(UsuarioGrupoController.class).listar(usuario.getId()))
 				.withRel("grupos-usuario"));
 		return usuarioModel;

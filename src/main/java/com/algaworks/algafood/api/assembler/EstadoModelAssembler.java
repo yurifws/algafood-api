@@ -1,7 +1,6 @@
 package com.algaworks.algafood.api.assembler;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +22,11 @@ public class EstadoModelAssembler extends RepresentationModelAssemblerSupport<Es
 	@Autowired
 	private ModelMapper modelMapper;
 	
+	@Override
 	public EstadoModel toModel(Estado estado) {
 		EstadoModel estadoModel = createModelWithId(estado.getId(), estado);
 		modelMapper.map(estado, estadoModel);	
-		estadoModel.add(linkTo(methodOn(EstadoController.class).listar())
-				.withRel("estados"));
+		estadoModel.add(linkTo(EstadoController.class).withRel("estados"));
 		
 		return estadoModel;
 	}

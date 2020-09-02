@@ -28,8 +28,7 @@ public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Ci
 	public CidadeModel toModel(Cidade cidade) {
 		CidadeModel cidadeModel = createModelWithId(cidade.getId(), cidade);
 		modelMapper.map(cidade, cidadeModel);
-		cidadeModel.add(linkTo(methodOn(CidadeController.class).listar())
-				.withRel("cidades"));
+		cidadeModel.add(linkTo(CidadeController.class).withRel("cidades"));
 		cidadeModel.getEstado().add(linkTo(methodOn(EstadoController.class).buscar(cidadeModel.getEstado().getId()))
 				.withSelfRel());
 		return cidadeModel;
