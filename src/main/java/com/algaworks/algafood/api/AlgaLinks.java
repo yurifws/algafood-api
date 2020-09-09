@@ -185,6 +185,14 @@ public class AlgaLinks {
 				.withRel(rel);
 	}
 	
+	public Link linkToFormaPagamentos() {
+		return linkToFormaPagamentos(IanaLinkRelations.SELF.value());
+	}
+	
+	public Link linkToFormaPagamentos(String rel) {
+		return linkTo(FormaPagamentoController.class).withRel(rel);
+	}
+	
 	public Link linkToFormaPagamento(Long formaPagamentoId) {
 		return linkToFormaPagamento(formaPagamentoId, IanaLinkRelations.SELF.value());
 	}
