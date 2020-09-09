@@ -35,6 +35,9 @@ public class AlgaLinks {
 	public static final TemplateVariables RESTAURANTE_VARIABLES = new TemplateVariables(
 			new TemplateVariable("projecao", VariableType.REQUEST_PARAM));
 	
+	public static final TemplateVariables FORMA_PAGAMENTO_VARIABLES = new TemplateVariables(
+			new TemplateVariable("formaPagamentoId", VariableType.REQUEST_PARAM));
+	
 	public Link linkToPedidos(String rel) {
 
 		TemplateVariables filtroVariables = new TemplateVariables(
@@ -119,9 +122,9 @@ public class AlgaLinks {
 		return linkTo(UsuarioController.class).withRel(rel);
 	}
 	
-	public Link linkToRestauranteFormasPagamentoAssociacao(Long restauranteId,Long formaPagamentoId, String rel) {
+	public Link linkToRestauranteFormasPagamentoAssociacao(Long restauranteId, String rel) {
 		return linkTo(methodOn(RestauranteFormaPagamentoController.class)
-				.associar(restauranteId, formaPagamentoId))
+				.associar(restauranteId, null))
 				.withRel(rel);
 	}
 	
