@@ -32,7 +32,10 @@ public class AlgaLinks {
 			new TemplateVariable("size", VariableType.REQUEST_PARAM),
 			new TemplateVariable("sort", VariableType.REQUEST_PARAM));
 	
-	public Link linkToPedidos() {
+	public static final TemplateVariables RESTAURANTE_VARIABLES = new TemplateVariables(
+			new TemplateVariable("projecao", VariableType.REQUEST_PARAM));
+	
+	public Link linkToPedidos(String rel) {
 
 		TemplateVariables filtroVariables = new TemplateVariables(
 				new TemplateVariable("clienteId", VariableType.REQUEST_PARAM),
@@ -41,7 +44,7 @@ public class AlgaLinks {
 				new TemplateVariable("dataCriacaoFim", VariableType.REQUEST_PARAM));
 
 		return new Link(UriTemplate.of(linkTo(PedidoController.class).toUri().toString(), 
-				PAGE_VARIABLES.concat(filtroVariables)), "pedidos");
+				PAGE_VARIABLES.concat(filtroVariables)), rel);
 	}
 	
 	public Link linkToConfirmacaoPedido(String codigoPedido, String rel) {
@@ -168,7 +171,8 @@ public class AlgaLinks {
 	}
 	
 	public Link linkToRestaurantes(String rel) {
-		return linkTo(RestauranteController.class).withRel(rel);
+		return new Link(UriTemplate.of(linkTo(RestauranteController.class).toUri().toString(), 
+				RESTAURANTE_VARIABLES), rel);
 	}
 	
 	public Link linkToItem(Long restauranteId, Long produtoId) {
