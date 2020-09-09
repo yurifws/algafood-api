@@ -35,5 +35,39 @@ public class RestauranteModel extends RepresentationModel<RestauranteModel>{
 	
 	private EnderecoModel endereco;
 	
+	public boolean isAberto() {
+		return aberto;
+	}
+	
+	public boolean isFechado() {
+		return !isAberto();
+	}
+	
+	public boolean isAtivado() {
+		return ativo;	
+	}
+	
+	public boolean isInativado() {
+		return !isAtivado();
+	}
+	
+	public boolean aberturaPermitida() {
+		return isAtivado() && isFechado();
+	}
+	
+	public boolean fechamentoPermitido() {
+		return isAberto();
+	}
+	
+	public boolean ativacaoPermitida() {
+		return isInativado();
+	}
+	
+	public boolean inativacaoPermitida() {
+		return isAtivado();
+	}
+	
+	
+	
 
 }
