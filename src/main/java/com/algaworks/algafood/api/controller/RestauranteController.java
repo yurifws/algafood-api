@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,15 +22,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.assembler.RestauranteApenasNomeModelAssembler;
+import com.algaworks.algafood.api.assembler.RestauranteBasicoModelAssembler;
 import com.algaworks.algafood.api.assembler.RestauranteInputDisassembler;
 import com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
+import com.algaworks.algafood.api.model.RestauranteApenasNomeModel;
+import com.algaworks.algafood.api.model.RestauranteBasicoModel;
 import com.algaworks.algafood.api.model.RestauranteModel;
-import com.algaworks.algafood.api.model.RestauranteView;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.api.openapi.controller.RestauranteControllerOpenApi;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.RestauranteService;
-import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping(path = "/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -42,18 +45,24 @@ public class RestauranteController implements RestauranteControllerOpenApi{
 	private RestauranteModelAssembler restauranteModelAssembler;
 	
 	@Autowired
+	private RestauranteBasicoModelAssembler restauranteBasicoModelAssembler;
+	
+	@Autowired
+	private RestauranteApenasNomeModelAssembler restauranteApenasNomeModelAssembler;
+	
+	@Autowired
 	private RestauranteInputDisassembler restauranteInputDisassembler;
 
-	@JsonView(RestauranteView.Resumo.class)
+	//@JsonView(RestauranteView.Resumo.class)
 	@GetMapping
-	public List<RestauranteModel> listar() {
-		return restauranteModelAssembler.toCollectionModel(restauranteService.listar());
+	public CollectionModel<RestauranteBasicoModel> listar() {
+		return restauranteBasicoModelAssembler.toCollectionModel(restauranteService.listar());
 	}
 	
-	@JsonView(RestauranteView.ApenasNome.class)
+	//@JsonView(RestauranteView.ApenasNome.class)
 	@GetMapping(params = "projecao=apenas-nome")
-	public List<RestauranteModel> listarApenasNome() {
-		return restauranteModelAssembler.toCollectionModel(restauranteService.listar());
+	public CollectionModel<RestauranteApenasNomeModel> listarApenasNome() {
+		return restauranteApenasNomeModelAssembler.toCollectionModel(restauranteService.listar());
 	}
 	
 //	@GetMapping
@@ -78,14 +87,14 @@ public class RestauranteController implements RestauranteControllerOpenApi{
 	}
 	
 	@GetMapping("/por-taxa-frete")
-	public List<RestauranteModel> consultarPorTaxaFrete(@RequestParam BigDecimal taxaInicial,
+	public CollectionModel<RestauranteModel> consultarPorTaxaFrete(@RequestParam BigDecimal taxaInicial,
 			@RequestParam BigDecimal taxaFinal) {
 		return restauranteModelAssembler.toCollectionModel(
 				restauranteService.buscarPorTaxaFrete(taxaInicial, taxaFinal));
 	}
 
 	@GetMapping("/por-nome-e-cozinha-id")
-	public List<RestauranteModel> consultarPorNomeECozinha(@RequestParam String nome, @RequestParam Long cozinhaId) {
+	public CollectionModel<RestauranteModel> consultarPorNomeECozinha(@RequestParam String nome, @RequestParam Long cozinhaId) {
 		return restauranteModelAssembler.toCollectionModel(
 				restauranteService.buscarPorNomeECozinhaId(nome, cozinhaId));
 	}
@@ -100,7 +109,7 @@ public class RestauranteController implements RestauranteControllerOpenApi{
 	}
 
 	@GetMapping("/top2-por-nome")
-	public List<RestauranteModel> buscarTop2PorNome(@RequestParam String nome) {
+	public CollectionModel<RestauranteModel> buscarTop2PorNome(@RequestParam String nome) {
 		return restauranteModelAssembler.toCollectionModel(
 					restauranteService.buscarTop2PorNome(nome));
 	}
@@ -111,13 +120,13 @@ public class RestauranteController implements RestauranteControllerOpenApi{
 	}
 
 	@GetMapping("/por-nome-e-frete")
-	public List<RestauranteModel> buscarPorNomeEFrete(String nome, BigDecimal taxaInicial, BigDecimal taxaFinal) {
+	public CollectionModel<RestauranteModel> buscarPorNomeEFrete(String nome, BigDecimal taxaInicial, BigDecimal taxaFinal) {
 		return restauranteModelAssembler.toCollectionModel(
 				restauranteService.buscarPorNomeEFrete(nome, taxaInicial, taxaFinal));
 	}
 
 	@GetMapping("/com-frete-gratis")
-	public List<RestauranteModel> buscarComFreteGratis(String nome) {
+	public CollectionModel<RestauranteModel> buscarComFreteGratis(String nome) {
 		return restauranteModelAssembler.toCollectionModel(
 				restauranteService.buscarComFreteGratis(nome));
 	}

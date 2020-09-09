@@ -7,14 +7,14 @@ import org.springframework.stereotype.Component;
 
 import com.algaworks.algafood.api.AlgaLinks;
 import com.algaworks.algafood.api.controller.RestauranteController;
-import com.algaworks.algafood.api.model.RestauranteModel;
+import com.algaworks.algafood.api.model.RestauranteBasicoModel;
 import com.algaworks.algafood.domain.model.Restaurante;
 
 @Component
-public class RestauranteModelAssembler extends RepresentationModelAssemblerSupport<Restaurante, RestauranteModel>{
+public class RestauranteBasicoModelAssembler extends RepresentationModelAssemblerSupport<Restaurante, RestauranteBasicoModel>{
 	
-	public RestauranteModelAssembler() {
-		super(RestauranteController.class, RestauranteModel.class);
+	public RestauranteBasicoModelAssembler() {
+		super(RestauranteController.class, RestauranteBasicoModel.class);
 	}
 
 	@Autowired
@@ -23,14 +23,11 @@ public class RestauranteModelAssembler extends RepresentationModelAssemblerSuppo
 	@Autowired
 	private AlgaLinks algaLinks;
 	
-	public RestauranteModel toModel(Restaurante restaurante) {
-		RestauranteModel restauranteModel = createModelWithId(restaurante.getId(), restaurante);
+	public RestauranteBasicoModel toModel(Restaurante restaurante) {
+		RestauranteBasicoModel restauranteModel = createModelWithId(restaurante.getId(), restaurante);
 		modelMapper.map(restaurante, restauranteModel);
 		restauranteModel.add(algaLinks.linkToRestaurantes("restaurantes"));
 		restauranteModel.getCozinha().add(algaLinks.linkToCozinha(restauranteModel.getCozinha().getId()));	
-		restauranteModel.getEndereco().getCidade().add(algaLinks.linkToCidade(restauranteModel.getEndereco().getCidade().getId()));
-		restauranteModel.add(algaLinks.linkToRestauranteFormasPagamento(restauranteModel.getId(), "formas-pagamento"));
-		restauranteModel.add(algaLinks.linkToRestauranteResponsavel(restauranteModel.getId(), "responsaveis"));
 		return restauranteModel;
 	}
 
