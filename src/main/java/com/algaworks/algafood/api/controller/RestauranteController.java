@@ -153,38 +153,44 @@ public class RestauranteController implements RestauranteControllerOpenApi{
 	
 	@PutMapping("/{id}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void ativar(@PathVariable Long id) {
+	public ResponseEntity<Void> ativar(@PathVariable Long id) {
 		restauranteService.ativar(id);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping("/{id}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void inativar(@PathVariable Long id) {
+	public ResponseEntity<Void> inativar(@PathVariable Long id) {
 		restauranteService.inativar(id);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping("/{id}/abertura")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void abrir(@PathVariable Long id) {
+	public ResponseEntity<Void> abrir(@PathVariable Long id) {
 		restauranteService.abrir(id);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping("/{id}/fechamento")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void fechar(@PathVariable Long id) {
+	public ResponseEntity<Void> fechar(@PathVariable Long id) {
 		restauranteService.fechar(id);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping("/ativacoes")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void ativarMultiplos(@RequestBody List<Long> restauranteIds) {
+	public ResponseEntity<Void> ativarMultiplos(@RequestBody List<Long> restauranteIds) {
 		restauranteService.ativar(restauranteIds);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping("/ativacoes")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void inativarMultiplos(@RequestBody List<Long> restauranteIds) {
+	public ResponseEntity<Void> inativarMultiplos(@RequestBody List<Long> restauranteIds) {
 		restauranteService.inativar(restauranteIds);
+		return ResponseEntity.noContent().build();
 	}
 
 }

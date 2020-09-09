@@ -3,11 +3,12 @@ package com.algaworks.algafood.api.openapi.controller;
 import java.util.List;
 
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
+import com.algaworks.algafood.api.model.RestauranteApenasNomeModel;
 import com.algaworks.algafood.api.model.RestauranteBasicoModel;
 import com.algaworks.algafood.api.model.RestauranteModel;
-import com.algaworks.algafood.api.model.RestauranteApenasNomeModel;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.api.openapi.model.RestauranteBasicoModelOpenApi;
 
@@ -62,7 +63,7 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(code = 204, message = "Restaurante ativado com sucesso"),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
-    public void ativar(
+    public ResponseEntity<Void> ativar(
             @ApiParam(value = "ID de um restaurante", example = "1", required = true)
             Long restauranteId);
 	
@@ -71,7 +72,7 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(code = 204, message = "Restaurante inativado com sucesso"),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
-	public void inativar(
+	public ResponseEntity<Void> inativar(
 			@ApiParam(value = "Id de um restaurante", example = "1", required = true) Long id);
 	
 	@ApiOperation("Abre um restaurante por Id")
@@ -79,7 +80,7 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(code = 204, message = "Restaurante aberto com sucesso"),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
-	public void abrir(
+	public ResponseEntity<Void> abrir(
 			@ApiParam(value = "Id de um restaurante", example = "1", required = true) Long id);
 	
 	@ApiOperation("Fecha um restaurante por Id")
@@ -87,21 +88,21 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(code = 204, message = "Restaurante fechado com sucesso"),
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
-	public void fechar(
+	public ResponseEntity<Void> fechar(
 			@ApiParam(value = "Id de um restaurante", example = "1", required = true) Long id);
 	
 	@ApiOperation("Ativa múltiplos restaurantes")
     @ApiResponses({
         @ApiResponse(code = 204, message = "Restaurantes ativados com sucesso")
     })
-	public void ativarMultiplos(
+	public ResponseEntity<Void> ativarMultiplos(
 			@ApiParam(name = "corpo", value = "IDs de restaurantes", required = true) List<Long> restauranteIds);
 	
 	@ApiOperation("Inativa múltiplos restaurantes")
     @ApiResponses({
         @ApiResponse(code = 204, message = "Restaurantes ativados com sucesso")
     })
-	public void inativarMultiplos(
+	public ResponseEntity<Void> inativarMultiplos(
 			@ApiParam(name = "corpo", value = "IDs de restaurantes", required = true) List<Long> restauranteIds);
 
 }
