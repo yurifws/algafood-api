@@ -8,9 +8,12 @@ import com.algaworks.algafood.api.model.CidadeModel;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @ApiModel("CidadesModel")
-@Data
+@Getter
+@Setter
 public class CidadesModelOpenApi {
 	
 	private CidadeEmbeddedModelOpenApi _embedded;
