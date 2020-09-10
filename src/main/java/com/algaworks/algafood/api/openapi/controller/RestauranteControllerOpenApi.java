@@ -18,6 +18,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Api(tags = "Restaurantes")
 public interface RestauranteControllerOpenApi {
@@ -36,6 +37,7 @@ public interface RestauranteControllerOpenApi {
 	})
 	public RestauranteModel buscar(@ApiParam(value = "Id de um restaurante", example = "1", required = true) Long id);
 
+	@ApiIgnore
 	@ApiOperation(value = "Listagem de restaurantes", hidden = true)
 	public CollectionModel<RestauranteApenasNomeModel> listarApenasNome();
 	
