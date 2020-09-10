@@ -223,11 +223,11 @@ public class AlgaLinks {
 				.withRel(rel);
 	}
 	
-	public Link linkToFormaPagamentos() {
-		return linkToFormaPagamentos(IanaLinkRelations.SELF.value());
+	public Link linkToFormasPagamento() {
+		return linkToFormasPagamento(IanaLinkRelations.SELF.value());
 	}
 	
-	public Link linkToFormaPagamentos(String rel) {
+	public Link linkToFormasPagamento(String rel) {
 		return linkTo(FormaPagamentoController.class).withRel(rel);
 	}
 	
