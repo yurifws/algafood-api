@@ -16,8 +16,8 @@ public class ProdutoService {
 	@Autowired
 	private ProdutoRepository produtoRepository;
 	
-	public List<Produto> listar(Restaurante restaurante, boolean incluirInativos){
-		if(incluirInativos) {
+	public List<Produto> listar(Restaurante restaurante, Boolean incluirInativos){
+		if(Boolean.TRUE.equals(incluirInativos)) {
 			return listarTodos(restaurante);
 		}
 		return listarAtivos(restaurante);
