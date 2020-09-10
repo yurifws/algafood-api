@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.AlgaLinks;
 
+import io.swagger.annotations.Api;
+
+@Api(tags = "Root Entry Point")
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class RootEntryPointController {
