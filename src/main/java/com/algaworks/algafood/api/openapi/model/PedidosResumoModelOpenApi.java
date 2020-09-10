@@ -11,18 +11,18 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@ApiModel("PedidosModel")
+@ApiModel("PedidosResumoModel")
 @Getter
 @Setter
-public class PedidosModelOpenApi {
+public class PedidosResumoModelOpenApi {
 	
-	private PedidoEmbeddedModelOpenApi _embedded;
+	private PedidoResumoEmbeddedModelOpenApi _embedded;
 	private Links _links;
 	private PageModelOpenApi page;
 	
-	@ApiModel("PedidoEmbeddedModel")
+	@ApiModel("PedidoResumoEmbeddedModel")
 	@Data
-	public class PedidoEmbeddedModelOpenApi{
+	public class PedidoResumoEmbeddedModelOpenApi{
 		
 		private List<PedidoResumoModel> pedidos;
 		

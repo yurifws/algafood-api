@@ -37,7 +37,7 @@ import com.algaworks.algafood.api.openapi.model.FormasPagamentoModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.GruposModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.LinksModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PageableModelOpenApi;
-import com.algaworks.algafood.api.openapi.model.PedidosModelOpenApi;
+import com.algaworks.algafood.api.openapi.model.PedidosResumoModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PermissoesModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 
@@ -86,7 +86,7 @@ public class SpringFoxConfig implements WebMvcConfigurer{
 						AlternateTypeRules.newRule(typeResolver.resolve(PagedModel.class, CozinhaModel.class), 
 								CozinhasModelOpenApi.class),
 						AlternateTypeRules.newRule(typeResolver.resolve(PagedModel.class, PedidoResumoModel.class), 
-								PedidosModelOpenApi.class),
+								PedidosResumoModelOpenApi.class),
 						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, CidadeModel.class), 
 								CidadesModelOpenApi.class),
 						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, EstadoModel.class), 
