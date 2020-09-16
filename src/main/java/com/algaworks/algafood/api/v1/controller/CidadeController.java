@@ -37,16 +37,20 @@ public class CidadeController implements CidadeControllerOpenApi{
 	@Autowired
 	private CidadeInputDisassembler cidadeInputDisassembler;
 
+	@Deprecated
+	@Override
 	@GetMapping
 	public CollectionModel<CidadeModel> listar() {
 		return cidadeModelAssembler.toCollectionModel(cidadeService.listar());
 	}
 	
+	@Override
 	@GetMapping("/{id}")
 	public CidadeModel buscar(@PathVariable Long id) {
 		return cidadeModelAssembler.toModel(cidadeService.buscar(id));
 	}
 
+	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
@@ -54,6 +58,7 @@ public class CidadeController implements CidadeControllerOpenApi{
 		return cidadeModelAssembler.toModel(cidadeService.salvar(cidade));
 	}
 
+	@Override
 	@PutMapping("/{id}")
 	public CidadeModel atualizar(@PathVariable Long id, @RequestBody @Valid CidadeInput cidadeInput) {
 		Cidade cidadeAtual = cidadeService.buscar(id);
@@ -61,6 +66,7 @@ public class CidadeController implements CidadeControllerOpenApi{
 		return cidadeModelAssembler.toModel(cidadeService.salvar(cidadeAtual));
 	}
 
+	@Override
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long id) {
