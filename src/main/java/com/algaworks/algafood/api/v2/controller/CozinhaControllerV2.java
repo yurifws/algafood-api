@@ -29,12 +29,13 @@ import com.algaworks.algafood.api.v2.assembler.CozinhaInputDisassemblerV2;
 import com.algaworks.algafood.api.v2.assembler.CozinhaModelAssemblerV2;
 import com.algaworks.algafood.api.v2.model.CozinhaModelV2;
 import com.algaworks.algafood.api.v2.model.input.CozinhaInputV2;
+import com.algaworks.algafood.api.v2.openapi.controller.CozinhaControllerOpenApiV2;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.service.CozinhaService;
 
 @RestController
 @RequestMapping(path = "/v2/cozinhas", produces = MediaType.APPLICATION_JSON_VALUE)
-public class CozinhaControllerV2 {
+public class CozinhaControllerV2 implements CozinhaControllerOpenApiV2{
 
 	@Autowired
 	private CozinhaService cozinhaService;
