@@ -68,7 +68,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SpringFoxConfig implements WebMvcConfigurer{
 
 
-//	@Bean
+	@Bean
 	public Docket apiDocketV1() {
 		var typeResolver = new TypeResolver();
 		return new Docket(DocumentationType.SWAGGER_2)
@@ -222,14 +222,7 @@ public class SpringFoxConfig implements WebMvcConfigurer{
 	}
 	
 	private ApiInfo apiInfoV1() {
-		return new ApiInfoBuilder()
-				.title("AlgaFood API (Depreciada)")
-				.description("API aberta para clientes e restaurantes.<br>"
-						+ "<strong>Essa versão da API está depreciada e deixará de existir a partir de 01/01/2021. "
-						+ "Use a versão mais atual da API.")
-				.version("1")
-				.contact(new Contact("AlgaWorks", "https://www.algaworks.com", "contato@algaworks.com"))
-				.build();
+		return apiInfo("1");
 	}
 	private ApiInfo apiInfoV2() {
 		return apiInfo("2");
