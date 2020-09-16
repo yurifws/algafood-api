@@ -14,7 +14,7 @@ import com.algaworks.algafood.api.v1.openapi.controller.PedidoStatusControllerOp
 import com.algaworks.algafood.domain.service.PedidoStatusService;
 
 @RestController
-@RequestMapping(path = "/pedidos/{codigo}", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/pedidos/{codigo}", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PedidoStatusController implements PedidoStatusControllerOpenApi{
 	
 	@Autowired

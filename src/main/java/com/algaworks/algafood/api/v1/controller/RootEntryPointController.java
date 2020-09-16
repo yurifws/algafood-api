@@ -13,7 +13,7 @@ import io.swagger.annotations.Api;
 
 @Api(tags = "Root Entry Point")
 @RestController
-@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RootEntryPointController {
 	
 	@Autowired
