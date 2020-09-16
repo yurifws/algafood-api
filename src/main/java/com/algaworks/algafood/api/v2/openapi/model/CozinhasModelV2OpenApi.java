@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.hateoas.Links;
 
 import com.algaworks.algafood.api.v1.model.CozinhaModel;
-import com.algaworks.algafood.api.v1.openapi.model.PageModelOpenApi;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -19,7 +18,7 @@ public class CozinhasModelV2OpenApi {
 	
 	private CozinhaEmbeddedModelOpenApi _embedded;
 	private Links _links;
-	private PageModelOpenApi page;
+	private PageModelV2OpenApi page;
 	
 	@ApiModel("CozinhaEmbeddedModel")
 	@Data
