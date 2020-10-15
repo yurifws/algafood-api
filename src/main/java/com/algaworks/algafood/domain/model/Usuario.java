@@ -53,12 +53,8 @@ public class Usuario {
 		inverseJoinColumns = @JoinColumn(name = "grupo_id"))
 	private Set<Grupo> grupos = new HashSet<>(0); 
 	
-	public boolean senhaAtualNaoCoincideSenhaUsuario(String senhaAtual) {
-		return !senha.equals(senhaAtual);
-	}
-	
-	public boolean senhaAtualCoincideSenhaUsuario(String senhaAtual) {
-		return senha.equals(senhaAtual);
+	public boolean isNovo() {
+		return id == null;
 	}
 	
 	public void associarGrupo(Grupo grupo) {

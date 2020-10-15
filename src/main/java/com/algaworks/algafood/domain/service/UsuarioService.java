@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,9 @@ public class UsuarioService implements IService<Usuario> {
 	
 	@Autowired
 	private GrupoService grupoService;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;  
 
 	@Override
 	public List<Usuario> listar() {
@@ -48,6 +52,10 @@ public class UsuarioService implements IService<Usuario> {
 			if(usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario)) {
 				throw new EmailUsuarioJaCadastradoException(usuario.getEmail());
 			}
+			if(usuario.isNovo()) {
+				usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+			}
+			
 			return usuarioRepository.save(usuario);
 		}catch (EmailUsuarioJaCadastradoException e) {
 			throw new NegocioException(e.getMessage(), e);
@@ -57,10 +65,10 @@ public class UsuarioService implements IService<Usuario> {
 	@Transactional
 	public void atualizarSenha(String senhaAtual, String novaSenha, Usuario usuario) {
 		try {
-			if (usuario.senhaAtualNaoCoincideSenhaUsuario(senhaAtual)) {
+			if (!passwordEncoder.matches(senhaAtual, usuario.getSenha())) {
 				throw new SenhaUsuarioNaoCoincideException();
 			}
-			usuario.setSenha(novaSenha);
+			usuario.setSenha(passwordEncoder.encode(novaSenha));
 		}catch (SenhaUsuarioNaoCoincideException e) {
 			throw new NegocioException(e.getMessage(), e);
 		}
