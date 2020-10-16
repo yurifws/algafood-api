@@ -27,6 +27,7 @@ import com.algaworks.algafood.api.v1.model.input.PedidoInput;
 import com.algaworks.algafood.api.v1.openapi.controller.PedidoControllerOpenApi;
 import com.algaworks.algafood.core.data.PageWrapper;
 import com.algaworks.algafood.core.data.PageableTranslatator;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.Usuario;
@@ -52,6 +53,9 @@ public class PedidoController implements PedidoControllerOpenApi{
 	@Autowired
 	private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
 	
+	@Autowired
+	private AlgaSecurity algaSecurity;
+	
 	@GetMapping
 	public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable){
 		Pageable pageableTraduzido = traduzirPageable(pageable);
@@ -73,7 +77,7 @@ public class PedidoController implements PedidoControllerOpenApi{
 		
 		//SERA USADO O DE AUTENTICAÇÃO
 		pedido.setCliente(new Usuario());
-		pedido.getCliente().setId(1L);
+		pedido.getCliente().setId(algaSecurity.getUsuarioId());
 		
 		return pedidoModelAssembler.toModel(pedidoService.salvar(pedido));
 		
