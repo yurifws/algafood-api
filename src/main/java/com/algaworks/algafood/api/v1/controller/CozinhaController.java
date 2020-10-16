@@ -14,6 +14,7 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,12 +50,14 @@ public class CozinhaController implements CozinhaControllerOpenApi{
 	@Autowired
 	private PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
 
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping
 	public PagedModel<CozinhaModel> listar(@PageableDefault(size = 10) Pageable pageable) {
 		Page<Cozinha> cozinhasPage = cozinhaService.listar(pageable);
 		return pagedResourcesAssembler.toModel(cozinhasPage, cozinhaModelAssembler);
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{id}")
 	public CozinhaModel buscar(@PathVariable Long id) {
 		return cozinhaModelAssembler.toModel(cozinhaService.buscar(id));
@@ -79,6 +82,7 @@ public class CozinhaController implements CozinhaControllerOpenApi{
 		return cozinhaService.existsNome(nome);
 	}
 
+	@PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CozinhaModel adicionar(@RequestBody @Valid CozinhaInput cozinhaInput) {
@@ -86,6 +90,7 @@ public class CozinhaController implements CozinhaControllerOpenApi{
 		return cozinhaModelAssembler.toModel(cozinhaService.salvar(cozinha));
 	}
 
+	@PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
 	@PutMapping("/{id}")
 	public CozinhaModel atualizar(@PathVariable Long id, @RequestBody @Valid CozinhaInput cozinhaInput) {
 		Cozinha cozinhaAtual = cozinhaService.buscar(id);
@@ -93,6 +98,7 @@ public class CozinhaController implements CozinhaControllerOpenApi{
 		return cozinhaModelAssembler.toModel(cozinhaService.salvar(cozinhaAtual));
 	}
 
+	@PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long id) {
