@@ -117,7 +117,7 @@ insert into tb_usuario (id, nome, email, senha, data_cadastro) values
 (7, 'Carlos Lima', 'email.teste.yurifws+carlos@gmail.com', '$2y$12$PGRO2KdXEhw0ehBTQt1./.baVwnNIt3L5C2p0HlwGEvrsVbQ7cdMu', utc_timestamp);
 
 
-insert into tb_usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
+insert into tb_usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2), (3, 3), (4, 4);
 
 insert into tb_restaurante_usuario_responsavel (restaurante_id, usuario_id) values (1, 5), (3, 5);
 
