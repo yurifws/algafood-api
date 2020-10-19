@@ -57,6 +57,7 @@ public class PedidoController implements PedidoControllerOpenApi{
 	@Autowired
 	private AlgaSecurity algaSecurity;
 	
+	@CheckSecurity.Pedidos.PodePesquisar
 	@GetMapping
 	public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable){
 		Pageable pageableTraduzido = traduzirPageable(pageable);
