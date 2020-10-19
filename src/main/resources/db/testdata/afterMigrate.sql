@@ -82,6 +82,7 @@ insert into tb_produto (nome, descricao, preco, ativo, restaurante_id) values ('
 
 insert into tb_grupo (id, nome) values (1, 'Gerente'), (2, 'Vendedor'), (3, 'Secretária'), (4, 'Cadastrador');
 
+
 # Adiciona todas as permissoes no grupo do gerente
 insert into tb_grupo_permissao (grupo_id, permissao_id)
 select 1, id from tb_permissao;
@@ -90,7 +91,8 @@ select 1, id from tb_permissao;
 insert into tb_grupo_permissao (grupo_id, permissao_id)
 select 2, id from tb_permissao where nome like 'CONSULTAR_%';
 
-insert into tb_grupo_permissao (grupo_id, permissao_id) values (2, 14);
+insert into tb_grupo_permissao (grupo_id, permissao_id)
+select 2, id from tb_permissao where nome = 'EDITAR_RESTAURANTES';
 
 # Adiciona permissoes no grupo do auxiliar
 insert into tb_grupo_permissao (grupo_id, permissao_id)
@@ -98,7 +100,7 @@ select 3, id from tb_permissao where nome like 'CONSULTAR_%';
 
 # Adiciona permissoes no grupo cadastrador
 insert into tb_grupo_permissao (grupo_id, permissao_id)
-select 4, id from tb_permissao where nome like '%_RESTAURANTES' or nome like '%_PRODUTOS';
+select 4, id from tb_permissao where nome like '%_RESTAURANTES';
 
 insert into tb_usuario (id, nome, email, senha, data_cadastro) values
 (1, 'João da Silva', 'joao.ger@algafood.com', '$2y$12$PGRO2KdXEhw0ehBTQt1./.baVwnNIt3L5C2p0HlwGEvrsVbQ7cdMu', utc_timestamp),

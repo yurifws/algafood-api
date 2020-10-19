@@ -63,7 +63,7 @@ public class RestauranteProdutoController implements ProdutosControllerOpenApi{
 		return produtoModelAssembler.toModel(produtoService.buscar(restaurante.getId(), produtoId));
 	}
 	
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ProdutoModel adicionar(@PathVariable Long restauranteId, @RequestBody @Valid ProdutoInput produtoInput) {
@@ -73,7 +73,7 @@ public class RestauranteProdutoController implements ProdutosControllerOpenApi{
 		return produtoModelAssembler.toModel(produtoService.salvar(produto));
 	}
 	
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
 	@PutMapping("/{produtoId}")
 	public ProdutoModel atualizar(@PathVariable Long restauranteId, @PathVariable Long produtoId, @RequestBody @Valid ProdutoInput produtoInput) {
 		Restaurante restaurante = restauranteService.buscar(restauranteId);

@@ -29,5 +29,7 @@ public interface RestauranteRepository
 	public List<Restaurante> findTop2ByNomeContaining(String nome);
 
 	public int countByCozinhaId(Long cozinhaId);
+	
+	public boolean existsResponsavel(Long restauranteId, Long usuarioId);
 
 }
