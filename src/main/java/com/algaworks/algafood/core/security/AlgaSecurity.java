@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
+import com.algaworks.algafood.domain.repository.PedidoRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 
 @Component
@@ -13,6 +14,9 @@ public class AlgaSecurity {
 	
 	@Autowired
 	private RestauranteRepository restauranteRepository;
+	
+	@Autowired
+	private PedidoRepository pedidoRepository;
 	
 	public Authentication getAuthentication() {
 		return SecurityContextHolder.getContext().getAuthentication();
@@ -28,6 +32,10 @@ public class AlgaSecurity {
 	        return false;
 	    }
 		return restauranteRepository.existsResponsavel(restauranteId, getUsuarioId());
+	}
+	
+	public boolean gerenciaRestauranteDoPedido(String codigo) {
+		return pedidoRepository.isPedidoGerenciadoPor(codigo, getUsuarioId());
 	}
 
 }

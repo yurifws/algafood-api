@@ -73,6 +73,7 @@ public class PedidoController implements PedidoControllerOpenApi{
 		return pedidoModelAssembler.toModel(pedidoService.buscar(codigo));
 	}
 	
+	@CheckSecurity.Pedidos.PodeCriar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public PedidoModel adicionar(@RequestBody @Valid PedidoInput pedidoInput){
