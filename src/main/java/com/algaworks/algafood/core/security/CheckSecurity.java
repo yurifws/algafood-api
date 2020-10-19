@@ -11,21 +11,35 @@ import org.springframework.security.access.prepost.PreAuthorize;
 @Retention(RUNTIME)
 @Target(METHOD)
 public @interface CheckSecurity {
-	
+
 	public @interface Cozinhas {
-		
+
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		@PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
 		public @interface PodeConsultar {}
-		
+
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		@PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_COZINHAS')")
 		public @interface PodeEditar {}
-		
+
 	}
-		
+
+	public @interface Restaurantes {
+
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		@PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+		public @interface PodeConsultar {}
+
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_RESTAURANTES')")
+		public @interface PodeEditar {}
+
+	}
+
 
 
 }
