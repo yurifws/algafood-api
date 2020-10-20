@@ -22,7 +22,7 @@ public class NotificacaoClientePedidoCanceladoListener {
 		
 		Mensagem mensagem = Mensagem.builder()
 				.assunto(String.format("%s - Pedido cancelado", pedido.getRestaurante().getNome()))
-				.corpo("pedido-cancelado.html")
+				.corpo("emails/pedido-cancelado.html")
 				.variavel("pedido", pedido)
 				.destinatario(pedido.getCliente().getEmail())
 				.build();
