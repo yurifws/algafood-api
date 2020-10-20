@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,7 +25,11 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-			//.authorizeRequests()
+			.formLogin()
+			.and()
+			.authorizeRequests()
+				.antMatchers("/oauth/**").authenticated()
+			.and()
 				//.antMatchers(HttpMethod.POST, "/v1/cozinhas/**").hasAuthority("EDITAR_COZINHAS")
 				//.antMatchers(HttpMethod.PUT, "/v1/cozinhas/**").hasAuthority("EDITAR_COZINHAS")
 				//.antMatchers(HttpMethod.GET, "/v1/cozinhas/**").authenticated()
@@ -57,6 +63,12 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter{
 			return grantedAuthorities;
 		});
 		return jwtAuthenticationConverter;
+	}
+	
+	@Bean
+	@Override
+	protected AuthenticationManager authenticationManager() throws Exception {
+		return super.authenticationManager();
 	}
 	
 }
