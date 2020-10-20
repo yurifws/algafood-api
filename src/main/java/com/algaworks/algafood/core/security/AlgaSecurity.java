@@ -38,12 +38,8 @@ public class AlgaSecurity {
 		return pedidoRepository.isPedidoGerenciadoPor(codigo, getUsuarioId());
 	}
 	
-	public boolean gerenciaProprioUsuario(Long id) {
-		if(id == null) {
-			return false;
-		}
-		
-		return id == getUsuarioId();
+	public boolean usuarioAutenticadoIgual(Long usuarioId) {
+		return getUsuarioId() != null && usuarioId != null && getUsuarioId() == usuarioId;
 	}
 
 }
