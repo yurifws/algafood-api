@@ -17,6 +17,7 @@ import com.algaworks.algafood.api.v1.AlgaLinks;
 import com.algaworks.algafood.api.v1.assembler.UsuarioModelAssembler;
 import com.algaworks.algafood.api.v1.model.UsuarioModel;
 import com.algaworks.algafood.api.v1.openapi.controller.RestauranteResponsavelControllerOpenApi;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.RestauranteService;
@@ -31,9 +32,11 @@ public class RestauranteResponsavelController implements RestauranteResponsavelC
 	@Autowired
 	private UsuarioModelAssembler responsavelModelAssembler;
 
-
 	@Autowired
 	private AlgaLinks algaLinks;
+	
+	@Autowired
+	private AlgaSecurity algaSecurity;
 
 	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping
@@ -41,16 +44,20 @@ public class RestauranteResponsavelController implements RestauranteResponsavelC
 		Restaurante restaurante = restauranteService.buscar(restauranteId);
 		CollectionModel<UsuarioModel>  responsaveisModel = 
 				responsavelModelAssembler.toCollectionModel(restaurante.getResponsaveis())
-				.removeLinks()
-				.add(algaLinks.linkToRestauranteResponsavel(restauranteId))
-				.add(algaLinks.linkToRestauranteResponsavelAssociacao(
-						restauranteId, "associar"));
+				.removeLinks();
+		
+		responsaveisModel.add(algaLinks.linkToRestauranteResponsavel(restauranteId));
 
-		responsaveisModel.getContent().forEach( responsavelModel -> {
-			responsavelModel.add(
-					algaLinks.linkToRestauranteResponsavelDesassociacao(
-							restauranteId, responsavelModel.getId(), "desassociar"));
-		});
+	    if (algaSecurity.podeGerenciarCadastroRestaurantes()) {
+			responsaveisModel.add(algaLinks.linkToRestauranteResponsavelAssociacao(
+							restauranteId, "associar"));
+	
+			responsaveisModel.getContent().forEach( responsavelModel -> {
+				responsavelModel.add(
+						algaLinks.linkToRestauranteResponsavelDesassociacao(
+								restauranteId, responsavelModel.getId(), "desassociar"));
+			});
+	    }
 		return responsaveisModel;
 	}
 
