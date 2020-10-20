@@ -21,6 +21,7 @@ import com.algaworks.algafood.api.v1.assembler.CidadeModelAssembler;
 import com.algaworks.algafood.api.v1.model.CidadeModel;
 import com.algaworks.algafood.api.v1.model.input.CidadeInput;
 import com.algaworks.algafood.api.v1.openapi.controller.CidadeControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.service.CidadeService;
 
@@ -37,18 +38,21 @@ public class CidadeController implements CidadeControllerOpenApi{
 	@Autowired
 	private CidadeInputDisassembler cidadeInputDisassembler;
 
+	@CheckSecurity.Cidades.PodeConsultar
 	@Override
 	@GetMapping
 	public CollectionModel<CidadeModel> listar() {
 		return cidadeModelAssembler.toCollectionModel(cidadeService.listar());
 	}
 	
+	@CheckSecurity.Cidades.PodeConsultar
 	@Override
 	@GetMapping("/{id}")
 	public CidadeModel buscar(@PathVariable Long id) {
 		return cidadeModelAssembler.toModel(cidadeService.buscar(id));
 	}
 
+	@CheckSecurity.Cidades.PodeEditar
 	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
@@ -57,6 +61,7 @@ public class CidadeController implements CidadeControllerOpenApi{
 		return cidadeModelAssembler.toModel(cidadeService.salvar(cidade));
 	}
 
+	@CheckSecurity.Cidades.PodeEditar
 	@Override
 	@PutMapping("/{id}")
 	public CidadeModel atualizar(@PathVariable Long id, @RequestBody @Valid CidadeInput cidadeInput) {
@@ -65,6 +70,7 @@ public class CidadeController implements CidadeControllerOpenApi{
 		return cidadeModelAssembler.toModel(cidadeService.salvar(cidadeAtual));
 	}
 
+	@CheckSecurity.Cidades.PodeEditar
 	@Override
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
