@@ -225,6 +225,7 @@
 	<profiles>
 		<profile>
 			<id>docker</id>
+			
 			<build>
 				<plugins>
 					<plugin>
