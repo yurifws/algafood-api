@@ -3,6 +3,24 @@ set sql_safe_updates = 0;
 
 set foreign_key_checks = 0;
 
+lock tables tb_cidade write,
+			tb_cozinha write,
+			tb_estado write,
+			tb_forma_pagamento write,
+			tb_grupo write,
+			tb_grupo_permissao write,
+			tb_permissao write,
+			tb_produto write,
+			tb_restaurante write,
+			tb_restaurante_forma_pagamento write,
+			tb_usuario write,
+			tb_usuario_grupo write,
+			tb_restaurante_usuario_responsavel write,
+			tb_pedido write,
+			tb_item_pedido write,
+			tb_foto_produto write,
+			oauth_client_details write;
+
 delete from tb_cidade;
 delete from tb_cozinha;
 delete from tb_estado;
@@ -201,3 +219,5 @@ values (
   'READ,WRITE', 'client_credentials', null, 'CONSULTAR_PEDIDOS,GERAR_RELATORIOS',
   null, null, null
 );
+
+unlock tables;
